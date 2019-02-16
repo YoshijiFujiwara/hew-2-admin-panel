@@ -55,6 +55,9 @@
       >
         <v-icon>menu</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn @click.prevent="logout">ログアウト</v-btn>
+
     </v-toolbar>
     <v-content>
       <v-container>
@@ -108,6 +111,12 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'ホイッスル管理画面'
+    }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
+      await this.$router.push('/login');
     }
   }
 }

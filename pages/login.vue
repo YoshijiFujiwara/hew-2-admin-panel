@@ -35,6 +35,7 @@
 <script>
     // import {mapGetters} from 'vuex';
     export default {
+        middleware: ['guest'],
         layout: 'guest',
         // computed: {
         //     ...mapGetters({
@@ -60,7 +61,6 @@
                 await this.$auth.loginWith("local", {
                     data: this.form
                 });
-
                 this.$router.push('/');
             },
         },      

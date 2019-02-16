@@ -36,10 +36,5 @@
         fixed: false,
       }
     },
-    methods: {
-      logout() {
-        this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
-      }
-    }
   }
 </script>

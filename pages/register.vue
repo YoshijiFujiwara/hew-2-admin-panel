@@ -44,6 +44,7 @@
 
 <script>
     export default {
+        middleware: ['guest'],
         layout: 'guest',
         data: () => ({
             valid: false,
