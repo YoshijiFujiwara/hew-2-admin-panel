@@ -8,7 +8,6 @@ export default function({ $axios, store }) {
         if (code > 299) {
             store.dispatch('validation/setErrors', error.response.data.error);
         }
-
         return Promise.reject(error);
     });
 
