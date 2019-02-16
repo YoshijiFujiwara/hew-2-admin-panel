@@ -38,6 +38,10 @@ module.exports = {
     '~/assets/style/app.styl'
   ],
 
+  router: {
+    middleware: ['clearValidationErrors']
+  },
+
   /*
   ** Plugins to load before mounting the App
   */
