@@ -89,46 +89,51 @@
 </template>
 
 <script>
-export default {
-  middleware: ['auth'],
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'ダッシュボード',
-          to: '/'
-        },
-        {
-          icon: 'apps',
-          title: 'ユーザー一覧',
-          to: '/users'
-        },
-        {
-          icon: 'apps',
-          title: 'セッション一覧',
-          to: '/sessions'
-        },
-        {
-          icon: 'apps',
-          title: 'グループ一覧',
-          to: '/groups'
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'ホイッスル管理画面'
-    }
-  },
-  methods: {
-    async logout() {
-      await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
-      await this.$router.push('/login');
-    }
+  export default {
+    middleware: ['auth'],
+    data() {
+      return {
+        clipped: false,
+        drawer: false,
+        fixed: false,
+        miniVariant: false,
+        right: true,
+        rightDrawer: false,
+        title: 'ホイッスル管理画面',
+        items: [
+          {
+            icon: 'apps',
+            title: 'ダッシュボード',
+            to: '/'
+          },
+          {
+            icon: 'apps',
+            title: 'ユーザー一覧',
+            to: '/users'
+          },
+          {
+            icon: 'apps',
+            title: 'セッション一覧',
+            to: '/sessions'
+          },
+          {
+            icon: 'apps',
+            title: 'グループ一覧',
+            to: '/groups'
+          },
+        ],
+      }
+    },
+    methods: {
+      async logout() {
+        await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
+        await this.$router.push('/login');
+      },
+    },
+    watch: {
+      $route () {
+        console.log('route changed', this.$route)
+      }
+    },
   }
-}
 </script>
