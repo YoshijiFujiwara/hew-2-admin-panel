@@ -19,10 +19,39 @@
                 <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                 <td class="text-xs-center">
                     <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                    <v-btn small color="error">削除</v-btn>
+                    <v-btn v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true">削除</v-btn>
                 </td>
             </template>
         </v-data-table>
+
+        <v-dialog
+            v-model="dialog"
+            max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="green darken-1"
+                        flat="flat"
+                        @click="dialog = false, deleteTargetId = null"
+                    >
+                        キャンセル
+                    </v-btn>
+
+                    <v-btn
+                        color="red darken-1"
+                        flat="flat"
+                        @click="deleteUser(deleteTargetId)"
+                    >
+                        削除
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -44,6 +73,8 @@
                     { text: '操作', value: '' },
                 ],
                 users: [],
+                dialog: false,
+                deleteTargetId: null,
             }
         },
         async asyncData({ $axios }) {
@@ -53,6 +84,12 @@
                 users: data,
             }
         },
+        methods: {
+            async deleteUser(id) {
+                await await this.$axios.$delete(`/admin/users/${id}`);
+                window.location.reload();
+            }
+        }
     }
 </script>
 

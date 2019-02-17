@@ -3,6 +3,7 @@
         <v-container>
             <v-layout column>
                 <p class="display-1">アカウント作成</p>
+                <span>(あのユーザーでしかログインできないから、意味ないよ)</span>
                 <v-flex
                     xs12
                 >
@@ -65,7 +66,7 @@
         }),
         methods: {
             async submit() {
-                 await this.$axios.$post('admin/register', this.form)
+                 await this.$axios.$post('admin/auth/register', this.form)
                      .catch(err => {
                          console.log(err.response);
                          return err.response;

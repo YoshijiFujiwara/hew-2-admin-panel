@@ -2,7 +2,8 @@
     <v-form v-model="valid" @submit.prevent="submit">
         <v-container>
             <v-layout column>
-                <p class="display-1">ログイン{{loggedIn}}</p>
+                <p class="display-1">ログイン</p>
+                <span>(セキュリティのため、あのユーザーでしかログインできません)</span>
                 <v-flex
                     xs12
                 >
@@ -59,6 +60,8 @@
             async submit() {
                 await this.$auth.loginWith("local", {
                     data: this.form
+                }).catch(err => {
+                    console.log(err);
                 });
                 this.$router.push('/');
             },

@@ -132,6 +132,7 @@
             to: '/default_settings'
           },
         ],
+
       }
     },
     methods: {
@@ -140,5 +141,10 @@
         await this.$router.push('/login');
       },
     },
+    watch: {
+      $route() {
+        console.log('route changed', this.$route.name);
+      }
+    }
   }
 </script>

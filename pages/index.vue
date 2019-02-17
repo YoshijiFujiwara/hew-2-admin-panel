@@ -26,10 +26,8 @@
             target="_blank"
             title="contribute"
           >こちら</a>.</p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
+          <h3 class="red--text">ユーザー以外の削除ボタンは推しても反応しません。一覧が見れれば、2月18日時点ではいいでしょうと。</h3>
+          <span>パンくずリストとかもつけたい気もするけど、それ以外にすべきことがおおい</span>
         </v-card-text>
       </v-card>
     </v-flex>

@@ -75,7 +75,7 @@ module.exports = {
            * laravel側のapiのルーティングに対応するように書きましょう
            */
           login: {
-            url: 'auth/login',
+            url: 'admin/auth/login',
             method: 'post',
             propertyName: "access_token"
           },

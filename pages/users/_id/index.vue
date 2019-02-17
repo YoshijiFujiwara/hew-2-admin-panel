@@ -104,7 +104,7 @@
                     <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-center">
-                        <v-btn small color="info">詳細</v-btn>
+                        <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
                         <v-btn small color="error">削除</v-btn>
                     </td>
                 </template>
@@ -113,9 +113,9 @@
         </v-flex>
 
         <v-flex
-                xs12
-                md12
-                class="mt-5"
+            xs12
+            md12
+            class="mt-5"
         >
             <h3>セッション一覧</h3>
             <v-data-table
@@ -137,7 +137,7 @@
                     <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-center">
-                        <v-btn small color="info">詳細</v-btn>
+                        <v-btn small color="info"><nuxt-link :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
                         <v-btn small color="error">削除</v-btn>
                     </td>
                 </template>
@@ -167,7 +167,7 @@
                     <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-center">
-                        <v-btn small color="info">詳細</v-btn>
+                        <v-btn small color="info"><nuxt-link :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
                         <v-btn small color="error">削除</v-btn>
                     </td>
                 </template>
@@ -196,7 +196,6 @@
                     <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-center">
-                        <v-btn small color="info">詳細</v-btn>
                         <v-btn small color="error">削除</v-btn>
                     </td>
                 </template>
