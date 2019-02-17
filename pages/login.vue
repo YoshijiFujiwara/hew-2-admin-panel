@@ -35,7 +35,6 @@
 <script>
     // import {mapGetters} from 'vuex';
     export default {
-        middleware: ['guest'],
         layout: 'guest',
         // computed: {
         //     ...mapGetters({

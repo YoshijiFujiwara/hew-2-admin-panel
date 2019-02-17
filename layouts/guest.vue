@@ -28,7 +28,7 @@
 
 <script>
   export default {
-
+    middleware: ['guest'],
     data() {
       return {
         clipped: false,
