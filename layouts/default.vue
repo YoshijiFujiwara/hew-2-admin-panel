@@ -102,32 +102,32 @@
         title: 'ホイッスル管理画面',
         items: [
           {
-            icon: 'apps',
+            icon: 'dashboard',
             title: 'ダッシュボード',
             to: '/'
           },
           {
-            icon: 'apps',
+            icon: 'people',
             title: 'ユーザー一覧',
             to: '/users'
           },
           {
-            icon: 'apps',
+            icon: 'local_drink',
             title: 'セッション一覧',
             to: '/sessions'
           },
           {
-            icon: 'apps',
+            icon: 'group_work',
             title: 'グループ一覧',
             to: '/groups'
           },
           {
-            icon: 'apps',
+            icon: 'edit_attributes',
             title: '属性一覧',
             to: '/attributes'
           },
           {
-            icon: 'apps',
+            icon: 'settings_applications',
             title: 'デフォルト設定一覧',
             to: '/default_settings'
           },
