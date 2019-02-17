@@ -60,7 +60,7 @@
 
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container fluid>
         <nuxt />
       </v-container>
     </v-content>
@@ -98,14 +98,24 @@ export default {
       items: [
         {
           icon: 'apps',
-          title: 'Welcome',
+          title: 'ダッシュボード',
           to: '/'
         },
         {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          icon: 'apps',
+          title: 'ユーザー一覧',
+          to: '/users'
+        },
+        {
+          icon: 'apps',
+          title: 'セッション一覧',
+          to: '/sessions'
+        },
+        {
+          icon: 'apps',
+          title: 'グループ一覧',
+          to: '/groups'
+        },
       ],
       miniVariant: false,
       right: true,
