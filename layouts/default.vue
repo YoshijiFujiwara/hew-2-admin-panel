@@ -121,6 +121,16 @@
             title: 'グループ一覧',
             to: '/groups'
           },
+          {
+            icon: 'apps',
+            title: '属性一覧',
+            to: '/attributes'
+          },
+          {
+            icon: 'apps',
+            title: 'デフォルト設定一覧',
+            to: '/default_settings'
+          },
         ],
       }
     },
@@ -129,11 +139,6 @@
         await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
         await this.$router.push('/login');
       },
-    },
-    watch: {
-      $route () {
-        console.log('route changed', this.$route)
-      }
     },
   }
 </script>

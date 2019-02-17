@@ -48,13 +48,11 @@
         },
         async asyncData({ $axios }) {
             let { data } = await $axios.$get('/admin/users');
+            console.log('data arrived')
             return {
                 users: data,
             }
         },
-        mounted() {
-            this.$emit('breadcrumb', this.items);
-        }
     }
 </script>
 
