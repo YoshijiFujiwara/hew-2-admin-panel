@@ -3,8 +3,16 @@ const pkg = require('./package')
 
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
+let generateDir = {};
+if (process.env.DEPLOY_ENV === 'S3'){
+  generateDir = {
+    generate: { dir: "dist/app" },
+  }
+}
+
 module.exports = {
   mode: 'spa',
+  ...generateDir,
 
   /*
   ** Headers of the page
