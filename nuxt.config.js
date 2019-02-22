@@ -71,6 +71,7 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: 'https://laravelv2-dot-eventer-1543384121468.appspot.com/api',
+    // baseURL: 'http://localhost/api',
   },
 
   // 認証
