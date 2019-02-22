@@ -280,6 +280,7 @@
         },
         async asyncData({ $axios, route }) {
             let showUser = await $axios.$get(`/admin/users/${route.params.id}`);
+            let friends = await $axios.$get(`/admin/users/${route.params.id}/friends`);
             let groups = await $axios.$get(`/admin/users/${route.params.id}/groups`);
             let sessions = await $axios.$get(`/admin/users/${route.params.id}/sessions`);
             let defaultSettings = await $axios.$get(`/admin/users/${route.params.id}/default_settings`);
@@ -287,6 +288,7 @@
 
             return {
                 showUser: showUser.data,
+                friends: friends.data,
                 groups: groups.data,
                 sessions: sessions.data,
                 defaultSettings: defaultSettings.data,
