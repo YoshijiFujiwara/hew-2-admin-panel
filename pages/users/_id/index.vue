@@ -1,85 +1,99 @@
 <template>
     <div>
-        <h1>ユーザー詳細</h1>
-            <v-flex
-                xs12
-                md12
+        <v-flex
+            xs12
+            md12
+        >
+            <v-card
+                color="white"
+                title="Edit Profile"
+                text="Complete your profile"
             >
-                <v-card
-                    color="white"
-                    title="Edit Profile"
-                    text="Complete your profile"
-                >
-                    <v-container py-0>
-                        <v-layout wrap>
-                            <v-flex
-                                xs12
-                                md6
-                                class="pr-3"
-                            >
-                                <v-text-field
+                <v-card-title>
+                    <h1>ユーザー詳細</h1>
+                </v-card-title>
+                <v-container py-0>
+                    <v-layout wrap>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                class="purple-input"
+                                label="User Name"
+                                v-model="showUser.username"
+                            />
+                        </v-flex>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                label="Email Address"
+                                class="purple-input"
+                                v-model="showUser.email"/>
+                        </v-flex>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                    label="name"
                                     class="purple-input"
-                                    label="User Name"
-                                    v-model="showUser.username"
-                                />
-                            </v-flex>
-                            <v-flex
-                                xs12
-                                md6
-                                class="pr-3"
-                            >
-                                <v-text-field
-                                    label="Email Address"
-                                    class="purple-input"
-                                    v-model="showUser.email"/>
-                            </v-flex>
-                            <v-flex
-                                xs12
-                                md6
-                                class="pr-3"
-                            >
-                                <v-text-field
-                                        label="name"
-                                        class="purple-input"
-                                        :value="showUser.name"/>
-                            </v-flex>
-                            <v-flex xs3>
-                                <v-switch color="info" value input-value="true" label="usernameでの検索" v-model="showUser.unique_id_search_flag"></v-switch>
-                            </v-flex>
-                            <v-flex xs3>
-                                <v-switch color="info" value input-value="true" label="unique_idでの検索" v-model="showUser.username_search_flag == 1"></v-switch>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-card>
-            </v-flex>
+                                    :value="showUser.name"/>
+                        </v-flex>
+                        <v-flex xs3>
+                            <v-switch color="info" value input-value="true" label="usernameでの検索" v-model="showUser.unique_id_search_flag"></v-switch>
+                        </v-flex>
+                        <v-flex xs3>
+                            <v-switch color="info" value input-value="true" label="unique_idでの検索" v-model="showUser.username_search_flag == 1"></v-switch>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-card>
+        </v-flex>
 
         <v-flex
                 xs12
                 md12
                 class="mt-5"
         >
-            <h3>フレンド一覧</h3>
-            <v-data-table
+            <v-card>
+                <v-card-title>
+                    <h2>フレンド一覧</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="friendSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
                     :headers="headers.friends"
                     :items="friends"
-                    class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.unique_id }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.username }}</td>
-                    <td class="text-xs-center">{{ props.item.email }}</td>
-                    <td class="text-xs-center">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
-                    <td class="text-xs-center">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
+                    :search="friendSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.unique_id }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.username }}</td>
+                        <td class="text-xs-center">{{ props.item.email }}</td>
+                        <td class="text-xs-center">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
+                        <td class="text-xs-center">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
+                        <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
 
         </v-flex>
 
@@ -88,28 +102,39 @@
             md12
             class="mt-5"
         >
-            <h3>グループ一覧</h3>
-            <v-data-table
+            <v-card>
+                <v-card-title>
+                    <h2>グループ一覧</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="groupSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
 
-                    :headers="headers.groups"
-                    :items="groups"
-                    class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.manager.username }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.users.length }}</td>
-                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+                        :headers="headers.groups"
+                        :items="groups"
+                        :search="groupSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.manager.username }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.users.length }}</td>
+                        <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
+                        <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
+                        <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
 
         <v-flex
@@ -117,32 +142,43 @@
             md12
             class="mt-5"
         >
-            <h3>セッション一覧</h3>
-            <v-data-table
-                    :headers="headers.sessions"
-                    :items="sessions"
-                    class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.manager.username }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.shop_id }}</td>
-                    <td class="text-xs-center">{{ props.item.budget }}</td>
-                    <td class="text-xs-center">{{ props.item.actual }}</td>
-                    <td class="text-xs-center">{{ props.item.start_time }}</td>
-                    <td class="text-xs-center">{{ props.item.end_time }}</td>
-                    <td class="text-xs-center">{{ props.item.users.length }}</td>
-                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+            <v-card>
+                <v-card-title>
+                    <h2>セッション一覧</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="sessionSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers.sessions"
+                        :items="sessions"
+                        :search="sessionSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.manager.username }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.shop_id }}</td>
+                        <td class="text-xs-center">{{ props.item.budget }}</td>
+                        <td class="text-xs-center">{{ props.item.actual }}</td>
+                        <td class="text-xs-center">{{ props.item.start_time }}</td>
+                        <td class="text-xs-center">{{ props.item.end_time }}</td>
+                        <td class="text-xs-center">{{ props.item.users.length }}</td>
+                        <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
+                        <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
+                        <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
 
         <v-flex
@@ -150,29 +186,40 @@
             md12
             class="mt-5"
         >
-            <h3>デフォルト設定一覧</h3>
-            <v-data-table
-                :headers="headers.defaultSettings"
-                :items="defaultSettings"
-                class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.manager.username }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.timer }}</td>
-                    <td class="text-xs-center">{{ props.item.group.id }}</td>
-                    <td class="text-xs-center">{{ props.item.group.name }}</td>
-                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+            <v-card>
+                <v-card-title>
+                    <h2>デフォルト設定一覧</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="defaultSettingSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers.defaultSettings"
+                        :items="defaultSettings"
+                        :search="defaultSettingSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.manager.username }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.timer }}</td>
+                        <td class="text-xs-center">{{ props.item.group.id }}</td>
+                        <td class="text-xs-center">{{ props.item.group.name }}</td>
+                        <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
+                        <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
+                        <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
 
         <v-flex
@@ -180,27 +227,38 @@
                 md12
                 class="mt-5"
         >
-            <h3>属性一覧</h3>
-            <v-data-table
-                    :headers="headers.attributes"
-                    :items="attributes"
-                    class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.manager.username }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.plus_minus }}</td>
-                    <td class="text-xs-center">{{ props.item.ratio }}</td>
-                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+            <v-card>
+                <v-card-title>
+                    <h2>属性一覧</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="attributeSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers.attributes"
+                        :items="attributes"
+                        :search="attributeSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.manager.username }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.plus_minus }}</td>
+                        <td class="text-xs-center">{{ props.item.ratio }}</td>
+                        <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
+                        <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
+                        <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
     </div>
 </template>
@@ -276,6 +334,11 @@
                         { text: '操作', value: '' },
                     ],
                 },
+                friendSearch: '',
+                groupSearch: '',
+                sessionSearch: '',
+                defaultSettingSearch: '',
+                attributeSearch: '',
             }
         },
         async asyncData({ $axios, route }) {
@@ -285,7 +348,7 @@
             let sessions = await $axios.$get(`/admin/users/${route.params.id}/sessions`);
             let defaultSettings = await $axios.$get(`/admin/users/${route.params.id}/default_settings`);
             let attributes = await $axios.$get(`/admin/users/${route.params.id}/attributes`);
-
+            console.log(friends);
             return {
                 showUser: showUser.data,
                 friends: friends.data,

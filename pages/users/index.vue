@@ -1,28 +1,41 @@
 <template>
     <div>
-        <h2>ユーザー一覧</h2>
-        <v-data-table
+        <v-card>
+            <v-card-title>
+                <h2>ユーザー一覧</h2>
+                <v-spacer></v-spacer>
+                <v-text-field
+                    v-model="search"
+                    append-icon="search"
+                    label="検索"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
                 :headers="headers"
                 :items="users"
-                class="elevation-1"
-        >
-            <template slot="items" slot-scope="props">
-                <td>{{ props.item.id }}</td>
-                <td class="text-xs-center">{{ props.item.unique_id }}</td>
-                <td class="text-xs-center">{{ props.item.name }}</td>
-                <td class="text-xs-center">{{ props.item.username }}</td>
-                <td class="text-xs-center">{{ props.item.email }}</td>
-                <td class="text-xs-center">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
-                <td class="text-xs-center">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
-                <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                <td class="text-xs-center">
-                    <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                    <v-btn v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true">削除</v-btn>
-                </td>
-            </template>
-        </v-data-table>
+                :search="search"
+            >
+                <template slot="items" slot-scope="props">
+                    <td>{{ props.item.id }}</td>
+                    <td class="text-xs-center">{{ props.item.unique_id }}</td>
+                    <td class="text-xs-center">{{ props.item.name }}</td>
+                    <td class="text-xs-center">{{ props.item.username }}</td>
+                    <td class="text-xs-center">{{ props.item.email }}</td>
+                    <td class="text-xs-center">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
+                    <td class="text-xs-center">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
+                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
+                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
+                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                    <td class="text-xs-center">
+                        <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                        <v-btn v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true">削除</v-btn>
+                    </td>
+                </template>
+            </v-data-table>
+        </v-card>
+
 
         <v-dialog
             v-model="dialog"
@@ -75,6 +88,7 @@
                 users: [],
                 dialog: false,
                 deleteTargetId: null,
+                search: '',
             }
         },
         async asyncData({ $axios }) {
