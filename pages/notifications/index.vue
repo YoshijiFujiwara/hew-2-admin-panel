@@ -68,7 +68,7 @@
                 x: null,
                 mode: '',
                 timeout: 6000,
-                text: 'プッシュ通知完了'
+                text: 'プッシュ!'
             }
         },
         methods: {
