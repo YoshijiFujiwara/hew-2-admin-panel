@@ -66,11 +66,11 @@
                 >
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
-                        <td class="text-xs-center">{{ props.item.unique_id }}</td>
-                        <td class="text-xs-center">{{ props.item.name }}</td>
-                        <td class="text-xs-center">{{ props.item.username }}</td>
-                        <td class="text-xs-center">{{ props.item.email }}</td>
-                        <td class="text-xs-center">
+                        <td class="text-xs-left">{{ props.item.unique_id }}</td>
+                        <td class="text-xs-left">{{ props.item.name }}</td>
+                        <td class="text-xs-left">{{ props.item.username }}</td>
+                        <td class="text-xs-left">{{ props.item.email }}</td>
+                        <td class="text-xs-left">
                             <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
                             <v-btn small color="error">削除</v-btn>
                         </td>

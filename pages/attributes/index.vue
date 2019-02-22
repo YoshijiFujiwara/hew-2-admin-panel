@@ -16,17 +16,18 @@
                 :headers="headers"
                 :items="attributes"
                 :search="search"
+                class=""
             >
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.manager.username }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.plus_minus }}</td>
-                    <td class="text-xs-center">{{ props.item.ratio }}</td>
-                    <td class="text-xs-center">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-center">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
-                    <td class="text-xs-center">
+                    <td class="text-xs-left">{{ props.item.manager.username }}</td>
+                    <td class="text-xs-left">{{ props.item.name }}</td>
+                    <td class="text-xs-left">{{ props.item.plus_minus }}</td>
+                    <td class="text-xs-left">{{ props.item.ratio }}</td>
+                    <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
+                    <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
+                    <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                    <td class="text-xs-left">
                         <v-btn small color="error">削除</v-btn>
                     </td>
                 </template>
