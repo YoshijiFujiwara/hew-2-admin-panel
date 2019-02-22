@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>グループ詳細</h1>
         <v-flex
                 xs12
                 md12
@@ -10,6 +9,9 @@
                     title="Edit Profile"
                     text="Complete your profile"
             >
+                <v-card-title>
+                    <h1>グループ詳細</h1>
+                </v-card-title>
                 <v-container py-0>
                     <v-layout wrap>
                         <v-flex
@@ -45,25 +47,36 @@
                 md12
                 class="mt-5"
         >
-            <h3>このグループの参加メンバー</h3>
-            <v-data-table
-                    :headers="headers"
-                    :items="groupUsers"
-                    class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.unique_id }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.username }}</td>
-                    <td class="text-xs-center">{{ props.item.email }}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+            <v-card>
+                <v-card-title>
+                    <h2>このグループの参加メンバー</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="groupUserSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="groupUsers"
+                        :search="groupUserSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.unique_id }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.username }}</td>
+                        <td class="text-xs-center">{{ props.item.email }}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
 
     </div>
@@ -75,6 +88,7 @@
             return {
                 group: [],
                 groupUsers: [],
+                groupUserSearch: '',
                 headers: [
                     { text: 'id', value: 'id' },
                     { text: 'ユニークID', value: 'unique_id' },
