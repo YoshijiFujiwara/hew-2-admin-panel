@@ -131,6 +131,11 @@
             title: 'デフォルト設定一覧',
             to: '/default_settings'
           },
+          {
+            icon: 'notifications_active',
+            title: 'プッシュ通知ためす',
+            to: '/notifications'
+          },
         ],
 
       }
