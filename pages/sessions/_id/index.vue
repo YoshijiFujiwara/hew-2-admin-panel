@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>セッション詳細</h1>
         <v-flex
             xs12
             md12
@@ -10,6 +9,9 @@
                 title="Edit Profile"
                 text="Complete your profile"
             >
+                <v-card-title>
+                    <h1>セッション詳細</h1>
+                </v-card-title>
                 <v-container py-0>
                     <v-layout wrap>
                         <v-flex
@@ -95,29 +97,40 @@
             md12
             class="mt-5"
         >
-            <h3>このセッションの参加メンバー</h3>
-            <v-data-table
-                :headers="headers"
-                :items="sessionUsers"
-                class="elevation-1"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.unique_id }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
-                    <td class="text-xs-center">{{ props.item.username }}</td>
-                    <td class="text-xs-center">{{ props.item.email }}</td>
-                    <td class="text-xs-center">{{ props.item.join_status }}</td>
-                    <td class="text-xs-center">{{ (props.item.paid)? 'はい': 'いいえ' }}</td>
-                    <td class="text-xs-center">{{ props.item.plus_minus }}</td>
-                    <td class="text-xs-center">{{ props.item.ratio }}</td>
-                    <td class="text-xs-center">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn small color="error">削除</v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-
+            <v-card>
+                <v-card-title>
+                    <h2>このセッションの参加メンバー</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="sessionUserSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="sessionUsers"
+                        :search="sessionUserSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-center">{{ props.item.unique_id }}</td>
+                        <td class="text-xs-center">{{ props.item.name }}</td>
+                        <td class="text-xs-center">{{ props.item.username }}</td>
+                        <td class="text-xs-center">{{ props.item.email }}</td>
+                        <td class="text-xs-center">{{ props.item.join_status }}</td>
+                        <td class="text-xs-center">{{ (props.item.paid)? 'はい': 'いいえ' }}</td>
+                        <td class="text-xs-center">{{ props.item.plus_minus }}</td>
+                        <td class="text-xs-center">{{ props.item.ratio }}</td>
+                        <td class="text-xs-center">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
         </v-flex>
 
     </div>
@@ -129,6 +142,7 @@
             return {
                 session: [],
                 sessionUsers: [],
+                sessionUserSearch: '',
 
                 headers: [
                     { text: 'id', value: 'id' },
