@@ -358,5 +358,160 @@
                 attributes: attributes.data,
             }
         },
+        methods: {
+            async updateUserInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}`)
+                    .then(res => {
+                        console.log(res)
+                        this.showUser = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateFriendInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/friends`)
+                    .then(res => {
+                        console.log(res)
+                        this.friends = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateGroupInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/groups`)
+                    .then(res => {
+                        console.log(res)
+                        this.groups = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateSessionInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/sessions`)
+                    .then(res => {
+                        console.log(res)
+                        this.sessions = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateDefaultSettingInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/default_settings`)
+                    .then(res => {
+                        console.log(res)
+                        this.defaultSettings = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateAttributeInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/attributes`)
+                    .then(res => {
+                        console.log(res)
+                        this.attributes = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('user_update', response => {
+                if (response.message.user_id == this.$route.params.id) {
+                    this.updateUserInfo();
+                }
+            })
+            window.Pusher.bind('friend_create', response => {
+                if (response.message.user_id == this.$route.params.id || response.message.friend_id == this.$route.params.id) {
+                    this.updateFriendInfo();
+                }
+            })
+            window.Pusher.bind('friend_update', response => {
+                if (response.message.user_id == this.$route.params.id || response.message.friend_id == this.$route.params.id) {
+                    this.updateFriendInfo();
+                }
+            })
+            window.Pusher.bind('friend_delete', response => {
+                if (response.message.user_id == this.$route.params.id || response.message.friend_id == this.$route.params.id) {
+                    this.updateFriendInfo();
+                }
+            })
+
+            window.Pusher.bind('group_create', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateGroupInfo();
+                }
+            })
+            window.Pusher.bind('group_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateGroupInfo();
+                }
+            })
+            window.Pusher.bind('group_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateGroupInfo();
+                }
+            })
+
+
+            window.Pusher.bind('session_create', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateSessionInfo();
+                }
+            })
+            window.Pusher.bind('session_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateSessionInfo();
+                }
+            })
+            window.Pusher.bind('session_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateSessionInfo();
+                }
+            })
+
+
+            window.Pusher.bind('attribute_create', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateAttributeInfo();
+                }
+            })
+            window.Pusher.bind('attribute_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateAttributeInfo();
+                }
+            })
+            window.Pusher.bind('attribute_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateAttributeInfo();
+                }
+            })
+
+
+            window.Pusher.bind('default_setting_create', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateDefaultSettingInfo();
+                }
+            })
+            window.Pusher.bind('default_setting_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateDefaultSettingInfo();
+                }
+            })
+            window.Pusher.bind('default_setting_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateDefaultSettingInfo();
+                }
+            })
+
+
+
+        }
     }
 </script>
