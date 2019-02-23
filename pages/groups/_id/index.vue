@@ -135,8 +135,16 @@
 
             // userネームの更新があるかもしれません
             window.Pusher.bind('user_update', response => {
-                if (response.message.user_id = this.group.manager.id) {
+                if (response.message.user_id == this.group.manager.id) {
                     this.updateGroupInfo();
+                }
+
+                // sessionUsersの中に変更のあるuserがいた場合も
+                for (let key in this.groupUsers) {
+                    if (response.message.user_id == this.groupUsers[key].id) {
+                        this.updateGroupInfo();
+                        break;
+                    }
                 }
             })
         }

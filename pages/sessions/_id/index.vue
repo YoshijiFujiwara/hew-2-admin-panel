@@ -180,6 +180,7 @@
             }
         },
         created() {
+            console.log(this.sessionUsers);
             window.Pusher.subscribe('admin_channel');
             window.Pusher.bind('session_update', response => {
                 if (response.message.manager_id == this.$route.params.id) {
@@ -194,8 +195,16 @@
 
             // userネームの更新があるかもしれません
             window.Pusher.bind('user_update', response => {
-                if (response.message.user_id = this.session.manager.id) {
+                if (response.message.user_id == this.session.manager.id) {
                     this.updateSessionInfo();
+                }
+
+                // sessionUsersの中に変更のあるuserがいた場合も
+                for (let key in this.sessionUsers) {
+                    if (response.message.user_id == this.sessionUsers[key].id) {
+                        this.updateSessionInfo();
+                        break;
+                    }
                 }
             })
         }
