@@ -69,6 +69,30 @@
                 sessions: data,
             }
         },
+        methods: {
+            async updateSessions() {
+                await this.$axios.$get('/admin/sessions')
+                    .then(res => {
+                        console.log(res)
+                        this.sessions = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('session_create', response => {
+                this.updateSessions();
+            })
+            window.Pusher.bind('session_update', response => {
+                this.updateSessions();
+            })
+            window.Pusher.bind('session_delete', response => {
+                this.updateSessions();
+            })
+        }
     }
 </script>
 

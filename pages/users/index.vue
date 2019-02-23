@@ -102,7 +102,29 @@
             async deleteUser(id) {
                 await await this.$axios.$delete(`/admin/users/${id}`);
                 window.location.reload();
+            },
+            async updateUsers() {
+                await this.$axios.$get('/admin/users')
+                    .then(res => {
+                        console.log(res)
+                        this.users = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('user_create', response => {
+                this.updateUsers();
+            })
+            window.Pusher.bind('user_update', response => {
+                this.updateUsers();
+            })
+            window.Pusher.bind('user_delete', response => {
+                this.updateUsers();
+            })
         }
     }
 </script>

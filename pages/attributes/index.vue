@@ -61,6 +61,30 @@
                 attributes: data,
             }
         },
+        methods: {
+            async updateAttributes() {
+                await this.$axios.$get('/admin/attributes')
+                    .then(res => {
+                        console.log(res)
+                        this.attributes = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('attribute_create', response => {
+                this.updateAttributes();
+            })
+            window.Pusher.bind('attribute_update', response => {
+                this.updateAttributes();
+            })
+            window.Pusher.bind('attribute_delete', response => {
+                this.updateAttributes();
+            })
+        }
     }
 </script>
 

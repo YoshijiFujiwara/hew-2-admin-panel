@@ -63,6 +63,30 @@
                 defaultSettings: data,
             }
         },
+        methods: {
+            async updateDefaultSettings() {
+                await this.$axios.$get('/admin/default_settings')
+                    .then(res => {
+                        console.log(res)
+                        this.defaultSettings = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('default_setting_create', response => {
+                this.updateDefaultSettings();
+            })
+            window.Pusher.bind('default_setting_update', response => {
+                this.updateDefaultSettings();
+            })
+            window.Pusher.bind('default_setting_delete', response => {
+                this.updateDefaultSettings();
+            })
+        }
     }
 </script>
 

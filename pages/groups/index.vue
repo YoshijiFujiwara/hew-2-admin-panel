@@ -59,6 +59,30 @@
                     groups: data,
                }
           },
+          methods: {
+               async updateGroups() {
+                    await this.$axios.$get('/admin/groups')
+                            .then(res => {
+                                 console.log(res)
+                                 this.groups = res.data;
+                            })
+                            .catch(err => {
+                                 console.log(err);
+                            })
+               }
+          },
+          created() {
+               window.Pusher.subscribe('admin_channel');
+               window.Pusher.bind('group_create', response => {
+                    this.updateGroups();
+               })
+               window.Pusher.bind('group_update', response => {
+                    this.updateGroups();
+               })
+               window.Pusher.bind('group_delete', response => {
+                    this.updateGroups();
+               })
+          }
      }
 </script>
 
