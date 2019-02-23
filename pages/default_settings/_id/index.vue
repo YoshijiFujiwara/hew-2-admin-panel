@@ -137,5 +137,38 @@
                 groupUsers: data.group.users
             }
         },
+        methods: {
+            async updateDefaultSettingInfo() {
+                await this.$axios.$get(`/admin/default_settings/${this.$route.params.id}`)
+                    .then(res => {
+                        console.log(res)
+                        this.defaultSetting = res.data;
+                        this.groupUsers = res.data.group.users;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('default_setting_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateDefaultSettingInfo();
+                }
+            })
+            window.Pusher.bind('default_setting_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.$router.push('/default_settings');
+                }
+            })
+
+            // userネームの更新があるかもしれません
+            window.Pusher.bind('user_update', response => {
+                if (response.message.user_id = this.defaultSetting.manager.id) {
+                    this.updateDefaultSettingInfo();
+                }
+            })
+        }
     }
 </script>

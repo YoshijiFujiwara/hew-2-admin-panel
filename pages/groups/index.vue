@@ -62,13 +62,13 @@
           methods: {
                async updateGroups() {
                     await this.$axios.$get('/admin/groups')
-                            .then(res => {
-                                 console.log(res)
-                                 this.groups = res.data;
-                            })
-                            .catch(err => {
-                                 console.log(err);
-                            })
+                       .then(res => {
+                            console.log(res)
+                            this.groups = res.data;
+                       })
+                       .catch(err => {
+                            console.log(err);
+                       })
                }
           },
           created() {
@@ -80,6 +80,11 @@
                     this.updateGroups();
                })
                window.Pusher.bind('group_delete', response => {
+                    this.updateGroups();
+               })
+
+               // userネームの更新があるかもしれません
+               window.Pusher.bind('user_update', response => {
                     this.updateGroups();
                })
           }

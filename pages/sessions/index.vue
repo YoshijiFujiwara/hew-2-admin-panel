@@ -92,6 +92,11 @@
             window.Pusher.bind('session_delete', response => {
                 this.updateSessions();
             })
+
+            // userネームの更新があるかもしれません
+            window.Pusher.bind('user_update', response => {
+                this.updateSessions();
+            })
         }
     }
 </script>

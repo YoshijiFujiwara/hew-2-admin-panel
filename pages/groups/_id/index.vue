@@ -107,5 +107,38 @@
                 groupUsers: data.users
             }
         },
+        methods: {
+            async updateGroupInfo() {
+                await this.$axios.$get(`/admin/groups/${this.$route.params.id}`)
+                    .then(res => {
+                        console.log(res)
+                        this.group = res.data;
+                        this.groupUsers = res.data.users;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            window.Pusher.subscribe('admin_channel');
+            window.Pusher.bind('group_update', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.updateGroupInfo();
+                }
+            })
+            window.Pusher.bind('group_delete', response => {
+                if (response.message.manager_id == this.$route.params.id) {
+                    this.$router.push('/groups');
+                }
+            })
+
+            // userネームの更新があるかもしれません
+            window.Pusher.bind('user_update', response => {
+                if (response.message.user_id = this.group.manager.id) {
+                    this.updateGroupInfo();
+                }
+            })
+        }
     }
 </script>

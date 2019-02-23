@@ -509,9 +509,6 @@
                     this.updateDefaultSettingInfo();
                 }
             })
-
-
-
         }
     }
 </script>

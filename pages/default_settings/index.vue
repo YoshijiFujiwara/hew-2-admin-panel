@@ -86,7 +86,13 @@
             window.Pusher.bind('default_setting_delete', response => {
                 this.updateDefaultSettings();
             })
+
+            // userネームの更新があるかもしれません
+            window.Pusher.bind('user_update', response => {
+                this.updateDefaultSettings();
+            })
         }
+
     }
 </script>
 
