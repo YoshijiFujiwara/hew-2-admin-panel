@@ -481,6 +481,16 @@
                         console.log(err);
                     })
             },
+            async updateParticipatedGroupInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/guests/groups`)
+                    .then(res => {
+                        console.log(res)
+                        this.participatedGroups = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
             async updateSessionInfo() {
                 await this.$axios.$get(`/admin/users/${this.$route.params.id}/sessions`)
                     .then(res => {
@@ -554,10 +564,24 @@
                 if (response.message.manager_id == this.$route.params.id) {
                     this.updateGroupInfo();
                 }
+                // ゲスト参加しているグループの中に、更新がある場合
+                for (let key in this.participatedGroups) {
+                    if (response.message.group_id == this.participatedGroups[key].id) {
+                        this.updateParticipatedGroupInfo();
+                        break;
+                    }
+                }
             })
             window.Pusher.bind('group_delete', response => {
                 if (response.message.manager_id == this.$route.params.id) {
                     this.updateGroupInfo();
+                }
+                // ゲスト参加しているグループの中に、更新がある場合
+                for (let key in this.participatedGroups) {
+                    if (response.message.group_id == this.participatedGroups[key].id) {
+                        this.updateParticipatedGroupInfo();
+                        break;
+                    }
                 }
             })
 
