@@ -271,7 +271,7 @@
                     <h2>ゲストとして参加しているセッション一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
-                            v-model="guestSessionSearch"
+                            v-model="participatedSessionSearch"
                             append-icon="search"
                             label="検索"
                             single-line
@@ -281,7 +281,7 @@
                 <v-data-table
                         :headers="headers.sessions"
                         :items="participatedSessions"
-                        :search="guestSessionSearch"
+                        :search="participatedSessionSearch"
                 >
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
@@ -304,6 +304,46 @@
                 </v-data-table>
             </v-card>
         </v-flex>
+
+        <v-flex
+                xs12
+                md12
+                class="mt-5"
+        >
+            <v-card>
+                <v-card-title>
+                    <h2>ゲスト参加しているグループ</h2>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="participatedGroupSearch"
+                            append-icon="search"
+                            label="検索"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+
+                        :headers="headers.groups"
+                        :items="participatedGroups"
+                        :search="participatedGroupSearch"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.id }}</td>
+                        <td class="text-xs-left">{{ props.item.manager.username }}</td>
+                        <td class="text-xs-left">{{ props.item.name }}</td>
+                        <td class="text-xs-left">{{ props.item.users.length }}</td>
+                        <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
+                        <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
+                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
+                        <td class="text-xs-left">
+                            <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
+                            <v-btn small color="error">削除</v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
+        </v-flex>
     </div>
 </template>
 
@@ -318,6 +358,7 @@
                 defaultSettings: [],
                 attributes: [],
                 participatedSessions: [],
+                participatedGroups: [],
                 headers: {
                     groups: [
                         { text: 'id', value: 'id' },
@@ -384,7 +425,8 @@
                 sessionSearch: '',
                 defaultSettingSearch: '',
                 attributeSearch: '',
-                guestSessionSearch: '',
+                participatedSessionSearch: '',
+                participatedGroupSearch: '',
             }
         },
         async asyncData({ $axios, route }) {
@@ -395,6 +437,7 @@
             let defaultSettings = await $axios.$get(`/admin/users/${route.params.id}/default_settings`);
             let attributes = await $axios.$get(`/admin/users/${route.params.id}/attributes`);
             let participatedSessions = await $axios.$get(`/admin/users/${route.params.id}/guests/sessions`);
+            let participatedGroups = await $axios.$get(`/admin/users/${route.params.id}/guests/groups`);
             console.log(friends);
             return {
                 showUser: showUser.data,
@@ -403,7 +446,8 @@
                 sessions: sessions.data,
                 defaultSettings: defaultSettings.data,
                 attributes: attributes.data,
-                participatedSessions: participatedSessions.data
+                participatedSessions: participatedSessions.data,
+                participatedGroups: participatedGroups.data
             }
         },
         methods: {
@@ -442,6 +486,16 @@
                     .then(res => {
                         console.log(res)
                         this.sessions = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            async updateParticipatedSessionInfo() {
+                await this.$axios.$get(`/admin/users/${this.$route.params.id}/guests/sessions`)
+                    .then(res => {
+                        console.log(res)
+                        this.participatedSessions = res.data;
                     })
                     .catch(err => {
                         console.log(err);
@@ -517,10 +571,24 @@
                 if (response.message.manager_id == this.$route.params.id) {
                     this.updateSessionInfo();
                 }
+                // ゲスト参加しているセッションの中に、更新がある場合
+                for (let key in this.participatedSessions) {
+                    if (response.message.session_id == this.participatedSessions[key].id) {
+                        this.updateParticipatedSessionInfo();
+                        break;
+                    }
+                }
             })
             window.Pusher.bind('session_delete', response => {
                 if (response.message.manager_id == this.$route.params.id) {
                     this.updateSessionInfo();
+                }
+                // ゲスト参加しているセッションの中に、更新がある場合
+                for (let key in this.participatedSessions) {
+                    if (response.message.session_id == this.participatedSessions[key].id) {
+                        this.updateParticipatedSessionInfo();
+                        break;
+                    }
                 }
             })
 
