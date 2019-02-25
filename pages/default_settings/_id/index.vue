@@ -67,6 +67,36 @@
                                     class="purple-input"
                                     v-model="defaultSetting.group.name"/>
                         </v-flex>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                label="現在地フラグ"
+                                class="purple-input"
+                                v-model="defaultSetting.current_location_flag"/>
+                        </v-flex>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                label="緯度"
+                                class="purple-input"
+                                v-model="defaultSetting.latitude"/>
+                        </v-flex>
+                        <v-flex
+                            xs12
+                            md6
+                            class="pr-3"
+                        >
+                            <v-text-field
+                                label="経度"
+                                class="purple-input"
+                                v-model="defaultSetting.longitude"/>
+                        </v-flex>
                     </v-layout>
                 </v-container>
             </v-card>
