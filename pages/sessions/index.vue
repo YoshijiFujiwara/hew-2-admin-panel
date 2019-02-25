@@ -82,7 +82,7 @@
                 <v-sheet height="700">
                     <v-calendar
                         ref="calendar"
-                        locale="jp-JP"
+                        locale="ja"
                         v-model="start"
                         :end="end"
                         color="primary"
