@@ -27,11 +27,40 @@
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-left">
-                        <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                        <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                     </td>
                 </template>
             </v-data-table>
         </v-card>
+
+        <v-dialog
+                v-model="dialog"
+                max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            color="green darken-1"
+                            flat="flat"
+                            @click="dialog = false, deleteTargetId = null"
+                    >
+                        キャンセル
+                    </v-btn>
+
+                    <v-btn
+                            color="red darken-1"
+                            flat="flat"
+                            @click="deleteAttribute(deleteTargetId)"
+                    >
+                        削除
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -51,6 +80,7 @@
                 ],
                 attributes: [],
                 search: '',
+                dialog: false,
             }
         },
         async asyncData({ $axios }) {
@@ -69,7 +99,23 @@
                     .catch(err => {
                         console.log(err);
                     })
-            }
+            },
+            async deleteAttribute(id) {
+                await this.$axios.$delete(`/admin/attributes/${id}`)
+                    .then(res => {
+                        for (let key in this.attributes) {
+                            if (this.attributes[key].id == id) {
+                                this.attributes.splice(key, 1);
+                            }
+                        }
+                        this.dialog = false;
+                    })
+                    .catch(err => {
+                        this.dialog = false;
+                        console.log(err);
+                    });
+
+            },
         },
         created() {
             window.Pusher.subscribe('admin_channel');
