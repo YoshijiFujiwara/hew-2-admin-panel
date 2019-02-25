@@ -59,6 +59,7 @@
       <v-btn @click.prevent="logout">ログアウト</v-btn>
 
     </v-toolbar>
+
     <v-content>
       <v-container fluid>
         <nuxt />

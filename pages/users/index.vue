@@ -36,7 +36,6 @@
             </v-data-table>
         </v-card>
 
-
         <v-dialog
             v-model="dialog"
             max-width="290"
@@ -112,7 +111,7 @@
                     .catch(err => {
                         console.log(err);
                     })
-            }
+            },
         },
         created() {
             window.Pusher.subscribe('admin_channel');
@@ -125,7 +124,7 @@
             window.Pusher.bind('user_delete', response => {
                 this.updateUsers();
             })
-        }
+        },
     }
 </script>
 

@@ -37,7 +37,10 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: {
+    color: 'blue',
+    height: '5px'
+  },
 
   /*
   ** Global CSS
@@ -55,9 +58,10 @@ module.exports = {
   */
   plugins: [
     '@/plugins/vuetify',
+    '@/plugins/pusher',
     './plugins/mixins/user.js',
     './plugins/mixins/validation.js',
-    './plugins/axios.js'
+    './plugins/axios.js',
   ],
 
   /*
