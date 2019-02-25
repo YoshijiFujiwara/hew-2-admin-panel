@@ -71,7 +71,7 @@
                         <td class="text-xs-left">{{ props.item.username }}</td>
                         <td class="text-xs-left">{{ props.item.email }}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>

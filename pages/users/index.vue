@@ -23,8 +23,14 @@
                     <td class="text-xs-left">{{ props.item.name }}</td>
                     <td class="text-xs-left">{{ props.item.username }}</td>
                     <td class="text-xs-left">{{ props.item.email }}</td>
-                    <td class="text-xs-left">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
-                    <td class="text-xs-left">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
+                    <td class="text-xs-left">
+                        <v-icon v-if="props.item.unique_id_search_flag" color="blue">radio_button_unchecked</v-icon>
+                        <v-icon v-if="!props.item.unique_id_search_flag" color="red">close</v-icon>
+                    </td>
+                    <td class="text-xs-left">
+                        <v-icon v-if="props.item.username_search_flag" color="blue">radio_button_unchecked</v-icon>
+                        <v-icon v-if="!props.item.username_search_flag" color="red">close</v-icon>
+                    </td>
                     <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>

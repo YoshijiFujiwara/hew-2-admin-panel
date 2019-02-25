@@ -28,12 +28,42 @@
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-center">
-                        <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
-                        <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                        <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
+                        <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                     </td>
                 </template>
             </v-data-table>
         </v-card>
+
+        <v-dialog
+                v-model="dialog"
+                max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            color="green darken-1"
+                            flat="flat"
+                            @click="dialog = false, deleteTargetId = null"
+                    >
+                        キャンセル
+                    </v-btn>
+
+                    <v-btn
+                            color="red darken-1"
+                            flat="flat"
+                            @click="deleteDefaultSetting(deleteTargetId)"
+                    >
+                        削除
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -54,7 +84,8 @@
                     { text: '操作', value: '' },
                 ],
                 defaultSettings: [],
-                search: ''
+                search: '',
+                dialog: false,
             }
         },
         async asyncData({ $axios }) {
@@ -73,7 +104,23 @@
                     .catch(err => {
                         console.log(err);
                     })
-            }
+            },
+            async deleteDefaultSetting(id) {
+                await this.$axios.$delete(`/admin/default_settings/${id}`)
+                    .then(res => {
+                        for (let key in this.defaultSettings) {
+                            if (this.defaultSettings[key].id == id) {
+                                this.defaultSettings.splice(key, 1);
+                            }
+                        }
+                        this.dialog = false;
+                    })
+                    .catch(err => {
+                        this.dialog = false;
+                        console.log(err);
+                    });
+
+            },
         },
         created() {
             window.Pusher.subscribe('admin_channel');

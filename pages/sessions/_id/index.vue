@@ -117,15 +117,19 @@
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
                         <td class="text-xs-left">{{ props.item.unique_id }}</td>
-                        <td class="text-xs-left">{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.username }}</td>
                         <td class="text-xs-left">{{ props.item.email }}</td>
-                        <td class="text-xs-left">{{ props.item.join_status }}</td>
-                        <td class="text-xs-left">{{ (props.item.paid)? 'はい': 'いいえ' }}</td>
-                        <td class="text-xs-left">{{ props.item.plus_minus }}</td>
-                        <td class="text-xs-left">{{ props.item.ratio }}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-icon v-if="props.item.join_status == 'allow'" color="blue">radio_button_unchecked</v-icon>
+                            <v-icon v-if="props.item.join_status == 'deny'" color="red">close</v-icon>
+                            <v-icon v-if="props.item.join_status == 'wait'">send</v-icon>
+                        </td>
+                        <td class="text-xs-left">
+                            <v-icon v-if="props.item.paid" color="green">check</v-icon>
+                        </td>
+                        <td class="text-xs-left">{{ props.item.plus_minus }}</td>
+                        <td class="text-xs-left">
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
@@ -147,13 +151,11 @@
                 headers: [
                     { text: 'id', value: 'id' },
                     { text: 'ユニークID', value: 'unique_id' },
-                    { text: '名前', value: 'name' },
                     { text: 'ユーザー名', value: 'username' },
                     { text: 'メールアドレス', value: 'email' },
                     { text: '参加ステータス', value: 'join_status' },
                     { text: '支払い済みか', value: 'paid' },
                     { text: '加減算', value: 'plus_minus' },
-                    { text: '割合', value: 'ratio' },
                     { text: '操作', value: '' },
                 ],
             }

@@ -84,11 +84,17 @@
                         <td class="text-xs-left">{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.username }}</td>
                         <td class="text-xs-left">{{ props.item.email }}</td>
-                        <td class="text-xs-left">{{ (props.item.unique_id_search_flag)? 'あり' : 'なし' }}</td>
-                        <td class="text-xs-left">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
+                        <td class="text-xs-left">
+                            <v-icon v-if="props.item.unique_id_search_flag" color="blue">radio_button_unchecked</v-icon>
+                            <v-icon v-if="!props.item.unique_id_search_flag" color="red">close</v-icon>
+                        </td>
+                        <td class="text-xs-left">
+                            <v-icon v-if="props.item.username_search_flag" color="blue">radio_button_unchecked</v-icon>
+                            <v-icon v-if="!props.item.username_search_flag" color="red">close</v-icon>
+                        </td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
@@ -129,7 +135,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
@@ -173,7 +179,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
@@ -214,7 +220,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
@@ -297,7 +303,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>

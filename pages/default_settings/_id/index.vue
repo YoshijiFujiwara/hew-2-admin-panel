@@ -67,15 +67,8 @@
                                     class="purple-input"
                                     v-model="defaultSetting.group.name"/>
                         </v-flex>
-                        <v-flex
-                            xs12
-                            md6
-                            class="pr-3"
-                        >
-                            <v-text-field
-                                label="現在地フラグ"
-                                class="purple-input"
-                                v-model="defaultSetting.current_location_flag"/>
+                        <v-flex xs3>
+                            <v-switch color="info" value input-value="true" label="現在地フラグ" v-model="defaultSetting.current_location_flag"></v-switch>
                         </v-flex>
                         <v-flex
                             xs12
@@ -131,7 +124,7 @@
                         <td class="text-xs-left">{{ props.item.username }}</td>
                         <td class="text-xs-left">{{ props.item.email }}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>

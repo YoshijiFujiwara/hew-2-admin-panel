@@ -23,7 +23,6 @@
                     <td class="text-xs-left">{{ props.item.manager.username }}</td>
                     <td class="text-xs-left">{{ props.item.name }}</td>
                     <td class="text-xs-left">{{ props.item.plus_minus }}</td>
-                    <td class="text-xs-left">{{ props.item.ratio }}</td>
                     <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
@@ -45,7 +44,6 @@
                     { text: '幹事ユーザー名', value: 'manager' },
                     { text: '属性名', value: 'name' },
                     { text: '加減算', value: 'plus_minus' },
-                    { text: '割合', value: 'ratio' },
                     { text: '作成日時', value: 'created_at' },
                     { text: '更新日時', value: 'updated_at' },
                     { text: '削除日時', value: 'deleted_at' },
