@@ -29,8 +29,8 @@
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-left">
-                        <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                        <v-btn v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true">削除</v-btn>
+                        <v-btn small fab color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
+                        <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                     </td>
                 </template>
             </v-data-table>

@@ -88,8 +88,8 @@
                         <td class="text-xs-left">{{ (props.item.username_search_flag)? 'あり' : 'なし' }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -129,8 +129,8 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -173,8 +173,8 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -214,8 +214,8 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -254,7 +254,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -297,8 +297,8 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -323,10 +323,9 @@
                     ></v-text-field>
                 </v-card-title>
                 <v-data-table
-
-                        :headers="headers.groups"
-                        :items="participatedGroups"
-                        :search="participatedGroupSearch"
+                    :headers="headers.groups"
+                    :items="participatedGroups"
+                    :search="participatedGroupSearch"
                 >
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
@@ -337,8 +336,8 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small color="info"><nuxt-link :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text">詳細</nuxt-link></v-btn>
-                            <v-btn small color="error">削除</v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
+                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>

@@ -38,7 +38,7 @@
                 </v-flex>
                 <div>
                     <v-btn type="submit" color="primary">ログイン</v-btn>
-                    <nuxt-link to="/register">登録する</nuxt-link>
+                    <nuxt-link style="text-decoration: none;" to="/register">登録する</nuxt-link>
                 </div>
             </v-layout>
         </v-container>

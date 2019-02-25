@@ -28,7 +28,7 @@
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                     <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-left">
-                        <v-btn small color="error">削除</v-btn>
+                        <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
                     </td>
                 </template>
             </v-data-table>
