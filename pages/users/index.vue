@@ -99,8 +99,19 @@
         },
         methods: {
             async deleteUser(id) {
-                await await this.$axios.$delete(`/admin/users/${id}`);
-                window.location.reload();
+                await this.$axios.$delete(`/admin/users/${id}`)
+                    .then(res => {
+                        for (let key in this.users) {
+                            if (this.users[key].id == id) {
+                                this.users.splice(key, 1);
+                            }
+                        }
+                        this.dialog = false;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+
             },
             async updateUsers() {
                 await this.$axios.$get('/admin/users')

@@ -27,11 +27,59 @@
                          <td class="text-xs-center">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                          <td class="text-xs-center">
                               <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>list</v-icon></nuxt-link></v-btn>
-                              <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                              <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                          </td>
                     </template>
                </v-data-table>
           </v-card>
+          <v-dialog
+                  v-model="dialog"
+                  max-width="290"
+          >
+               <v-card>
+                    <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                    <v-card-actions>
+                         <v-spacer></v-spacer>
+
+                         <v-btn
+                                 color="green darken-1"
+                                 flat="flat"
+                                 @click="dialog = false, deleteTargetId = null"
+                         >
+                              キャンセル
+                         </v-btn>
+
+                         <v-btn
+                                 color="red darken-1"
+                                 flat="flat"
+                                 @click="deleteGroup(deleteTargetId)"
+                         >
+                              削除
+                         </v-btn>
+                    </v-card-actions>
+               </v-card>
+          </v-dialog>
+
+          <v-snackbar
+                  v-model="snackbar"
+                  :bottom="y === 'bottom'"
+                  :left="x === 'left'"
+                  :multi-line="mode === 'multi-line'"
+                  :right="x === 'right'"
+                  :timeout="timeout"
+                  :top="y === 'top'"
+                  :vertical="mode === 'vertical'"
+          >
+               {{ text }}
+               <v-btn
+                       color="pink"
+                       flat
+                       @click="snackbar = false"
+               >
+                    Close
+               </v-btn>
+          </v-snackbar>
      </div>
 </template>
 
@@ -50,7 +98,14 @@
                          { text: '操作', value: '' },
                     ],
                     groups: [],
-                    search: ''
+                    search: '',
+                    dialog: false,
+                    snackbar: false,
+                    y: 'top',
+                    x: null,
+                    mode: '',
+                    timeout: 6000,
+                    text: 'このグループを使用しているデフォルト設定があるため削除できません'
                }
           },
           async asyncData({ $axios }) {
@@ -69,7 +124,29 @@
                        .catch(err => {
                             console.log(err);
                        })
-               }
+               },
+               async deleteGroup(id) {
+                    await this.$axios.$delete(`/admin/groups/${id}`)
+                         .then(res => {
+                              for (let key in this.groups) {
+                                   if (this.groups[key].id == id) {
+                                      this.groups.splice(key, 1);
+                                   }
+                              }
+                              this.dialog = false;
+                         })
+                         .catch(err => {
+                              if (err.response.status == 409) {
+                                   this.text = 'このグループを使用しているデフォルト設定があるため削除できません';
+                              } else {
+                                   this.text = '原因不明のエラーです';
+                              }
+                              this.snackbar = true;
+                              this.dialog = false;
+                              console.log(err);
+                         });
+
+               },
           },
           created() {
                window.Pusher.subscribe('admin_channel');
