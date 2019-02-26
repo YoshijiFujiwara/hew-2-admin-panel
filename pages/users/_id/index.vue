@@ -203,7 +203,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -458,6 +458,35 @@
             </v-card>
         </v-flex>
 
+        <v-dialog
+            v-model="dialog"
+            max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="green darken-1"
+                        flat="flat"
+                        @click="dialog = false, deleteTargetId = null"
+                    >
+                        キャンセル
+                    </v-btn>
+
+                    <v-btn
+                        color="red darken-1"
+                        flat="flat"
+                        @click="deleteFriend(deleteTargetId)"
+                    >
+                        削除
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
 
     </div>
 </template>
@@ -545,6 +574,9 @@
                 start: '2019-02-01',
                 end: '2019-02-06',
                 today: '2019-01-08',
+
+                deleteTargetId: null,
+                dialog: false,
             }
         },
         async asyncData({ $axios, route }) {
@@ -720,6 +752,22 @@
                     .then(res => {
                         console.log(res)
                         this.attributes = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+
+
+            async deleteFriend(id) {
+                await this.$axios.$delete(`/admin/users/${this.$route.params.id}/friends/${id}`)
+                    .then(res => {
+                        for (let key in this.friends) {
+                            if (this.friends[key].id == id) {
+                                this.friends.splice(key, 1);
+                            }
+                        }
+                        this.dialog = false;
                     })
                     .catch(err => {
                         console.log(err);
