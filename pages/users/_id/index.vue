@@ -56,6 +56,114 @@
             </v-card>
         </v-flex>
 
+        <!-- カレンダー -->
+        <v-card class="mt-5">
+            <v-layout>
+                <v-flex
+                        sm4
+                        xs12
+                        class="text-sm-left text-xs-center"
+                >
+                    <v-btn @click="$refs.calendar.prev()">
+                        <v-icon
+                                dark
+                                left
+                        >
+                            keyboard_arrow_left
+                        </v-icon>
+
+                    </v-btn>
+                </v-flex>
+                <v-flex
+                        sm4
+                        xs12
+                        class="text-xs-center"
+                >
+
+                </v-flex>
+                <v-flex
+                        sm4
+                        xs12
+                        class="text-sm-right text-xs-center"
+                >
+                    <!--<v-btn-toggle v-model="calendarType">-->
+                    <!--<v-btn flat value="month">-->
+                    <!--月-->
+                    <!--</v-btn>-->
+                    <!--<v-btn flat value="week">-->
+                    <!--週-->
+                    <!--</v-btn>-->
+                    <!--</v-btn-toggle>-->
+                    <v-btn @click="$refs.calendar.next()">
+
+                        <v-icon
+                                right
+                                dark
+                        >
+                            keyboard_arrow_right
+                        </v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+            <v-flex>
+                <v-sheet height="800">
+                    <v-calendar
+                            ref="calendar"
+                            locale="ja"
+                            v-model="start"
+                            :end="end"
+                            color="primary"
+                    >
+                        <template
+                                slot="day"
+                                slot-scope="{ date }"
+                        >
+                            <template v-for="(event, key) in eventsMap[date]">
+                                <v-menu
+                                    :key="`${event.title}-${key}`"
+                                    v-model="event.open"
+                                    full-width
+                                    offset-x
+                                >
+                                    <div
+                                        v-if="!event.time"
+                                        slot="activator"
+                                        v-ripple
+                                        :class="(event.managedFlag)? 'my-event' : 'my-participate-event'"
+                                        v-html="event.title"
+                                    ></div>
+                                    <v-card
+                                        color="grey lighten-4"
+                                        min-width="350px"
+                                        flat
+                                    >
+                                        <v-toolbar
+                                            :color="(event.managedFlag)? 'primary' : 'orange'"
+                                            dark
+                                        >
+                                            <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                                            <v-spacer></v-spacer>
+                                        </v-toolbar>
+                                        <v-card-title primary-title>
+                                            <span v-html="event.details"></span>
+                                        </v-card-title>
+                                        <v-card-actions>
+                                            <v-btn
+                                                    flat
+                                                    color="secondary"
+                                            >
+                                                <nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: event.sessionId}}" class="blue--text">詳細</nuxt-link>
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-menu>
+                            </template>
+                        </template>
+                    </v-calendar>
+                </v-sheet>
+            </v-flex>
+        </v-card>
+
         <v-flex
                 xs12
                 md12
@@ -63,7 +171,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>フレンド一覧</h2>
+                    <h2 class="blue--text">フレンド一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="friendSearch"
@@ -110,7 +218,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>グループ一覧</h2>
+                    <h2 class="blue--text">グループ一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="groupSearch"
@@ -150,7 +258,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>セッション一覧</h2>
+                    <h2 class="blue--text">セッション一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="sessionSearch"
@@ -194,7 +302,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>デフォルト設定一覧</h2>
+                    <h2 class="blue--text">デフォルト設定一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="defaultSettingSearch"
@@ -235,7 +343,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>属性一覧</h2>
+                    <h2 class="blue--text">属性一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="attributeSearch"
@@ -274,7 +382,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>ゲストとして参加しているセッション一覧</h2>
+                    <h2 class="orange--text">ゲストとして参加しているセッション一覧</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="participatedSessionSearch"
@@ -318,7 +426,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <h2>ゲスト参加しているグループ</h2>
+                    <h2 class="orange--text">ゲスト参加しているグループ</h2>
                     <v-spacer></v-spacer>
                     <v-text-field
                             v-model="participatedGroupSearch"
@@ -349,6 +457,8 @@
                 </v-data-table>
             </v-card>
         </v-flex>
+
+
     </div>
 </template>
 
@@ -432,6 +542,9 @@
                 attributeSearch: '',
                 participatedSessionSearch: '',
                 participatedGroupSearch: '',
+                start: '2019-02-01',
+                end: '2019-02-06',
+                today: '2019-01-08',
             }
         },
         async asyncData({ $axios, route }) {
@@ -455,7 +568,83 @@
                 participatedGroups: participatedGroups.data
             }
         },
+        computed: {
+            // convert the list of events into a map of lists keyed by date
+            eventsMap () {
+                const map = {}
+                this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+                return map
+            },
+            events() {
+                let eventDatas = [];
+                // 管理しているセッション情報
+                for (let key in this.sessions) {
+                    let allowCount = 0;
+                    let denyCount = 0;
+                    let waitCount = 0;
+
+                    for (let key2 in this.sessions[key].users) {
+                        switch (this.sessions[key].users[key2].join_status) {
+                            case 'allow':
+                                allowCount++;
+                                break;
+                            case 'wait':
+                                waitCount++;
+                                break;
+                            case 'deny':
+                                denyCount++;
+                                break;
+                        }
+                    }
+                    eventDatas.push({
+                        managedFlag: true,
+                        sessionId: this.sessions[key].id,
+                        title: this.sessions[key].name,
+                        date: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(0,10): null,
+                        // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
+                        details: `セッションID:&nbsp;${this.sessions[key].id}<br>幹事：${this.sessions[key].manager.username}<br>参加人数:${allowCount}人<br>招待中: ${waitCount}人<br>参加拒否: ${denyCount}人`,
+                        open: false
+                    })
+                }
+
+                // 参加しているセッション情報
+                for (let key in this.participatedSessions) {
+                    let allowCount = 0;
+                    let denyCount = 0;
+                    let waitCount = 0;
+
+                    for (let key2 in this.participatedSessions[key].users) {
+                        switch (this.participatedSessions[key].users[key2].join_status) {
+                            case 'allow':
+                                allowCount++;
+                                break;
+                            case 'wait':
+                                waitCount++;
+                                break;
+                            case 'deny':
+                                denyCount++;
+                                break;
+                        }
+                    }
+                    eventDatas.push({
+                        managedFlag: false,
+                        sessionId: this.participatedSessions[key].id,
+                        title: this.participatedSessions[key].name,
+                        date: (this.participatedSessions[key].start_time != null)? this.participatedSessions[key].start_time.slice(0,10): null,
+                        // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
+                        details: `セッションID:&nbsp;${this.participatedSessions[key].id}<br>幹事：${this.participatedSessions[key].manager.username}<br>参加人数:${allowCount}人<br>招待中: ${waitCount}人<br>参加拒否: ${denyCount}人`,
+                        open: false
+                    })
+                }
+
+                // console.log(eventDatas);
+                return eventDatas;
+            },
+        },
         methods: {
+            open (event) {
+                alert(event.title)
+            },
             async updateUserInfo() {
                 await this.$axios.$get(`/admin/users/${this.$route.params.id}`)
                     .then(res => {
@@ -657,3 +846,35 @@
         }
     }
 </script>
+
+<style lang="stylus" scoped>
+    .my-event {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 2px;
+        background-color: #1867c0;
+        color: #ffffff;
+        border: 1px solid #1867c0;
+        width: 100%;
+        font-size: 12px;
+        padding: 3px;
+        cursor: pointer;
+        margin-bottom: 1px;
+    }
+
+    .my-participate-event {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 2px;
+        background-color: #ff9900;
+        color: #ffffff;
+        border: 1px solid #ff9900;
+        width: 100%;
+        font-size: 12px;
+        padding: 3px;
+        cursor: pointer;
+        margin-bottom: 1px;
+    }
+</style>

@@ -38,6 +38,7 @@
             </v-data-table>
         </v-card>
 
+        <!-- カレンダー -->
         <v-card class="mt-5">
             <v-layout>
                 <v-flex
@@ -99,9 +100,9 @@
                             slot="day"
                             slot-scope="{ date }"
                         >
-                            <template v-for="event in eventsMap[date]">
+                            <template v-for="(event, key) in eventsMap[date]">
                                 <v-menu
-                                    :key="event.title"
+                                    :key="`${event.title}-${key}`"
                                     v-model="event.open"
                                     full-width
                                     offset-x
