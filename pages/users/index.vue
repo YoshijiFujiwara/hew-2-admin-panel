@@ -33,7 +33,6 @@
                     </td>
                     <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-left">
                         <v-btn small fab color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
                         <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
@@ -87,7 +86,6 @@
                     { text: 'usernameでの検索', value: 'username_search_flag' },
                     { text: '作成日時', value: 'created_at' },
                     { text: '更新日時', value: 'updated_at' },
-                    { text: '削除日時', value: 'deleted_at' },
                     { text: '操作', value: '' },
                 ],
                 users: [],
@@ -109,6 +107,7 @@
                     .then(res => {
                         for (let key in this.users) {
                             if (this.users[key].id == id) {
+                                this.users.splice(key, 1);
                                 this.users.splice(key, 1);
                             }
                         }

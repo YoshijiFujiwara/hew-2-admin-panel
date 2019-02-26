@@ -28,6 +28,8 @@
       :clipped-left="clipped"
       fixed
       app
+      dark
+      color="pink accent-1"
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-btn
@@ -56,7 +58,7 @@
         <v-icon>menu</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click.prevent="logout">ログアウト</v-btn>
+      <v-btn class="pink accent-1 elevation-2" @click.prevent="logout">ログアウト</v-btn>
 
     </v-toolbar>
 
@@ -136,6 +138,11 @@
             icon: 'notifications_active',
             title: 'プッシュ通知ためす',
             to: '/notifications'
+          },
+          {
+            icon: 'center_focus_strong',
+            title: 'フォーカスモード',
+            to: '/focus_mode'
           },
         ],
 

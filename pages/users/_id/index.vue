@@ -200,7 +200,6 @@
                             <v-icon v-if="props.item.username_search_flag" color="blue">radio_button_unchecked</v-icon>
                             <v-icon v-if="!props.item.username_search_flag" color="red">close</v-icon>
                         </td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'friend'"><v-icon>delete</v-icon></v-btn>
@@ -241,7 +240,6 @@
                         <td class="text-xs-left">{{ props.item.users.length }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'group'"><v-icon>delete</v-icon></v-btn>
@@ -285,7 +283,6 @@
                         <td class="text-xs-left">{{ props.item.users.length }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'session'"><v-icon>delete</v-icon></v-btn>
@@ -326,7 +323,6 @@
                         <td class="text-xs-left">{{ props.item.group.name }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'default_setting'"><v-icon>delete</v-icon></v-btn>
@@ -366,7 +362,6 @@
                         <td class="text-xs-left">{{ props.item.ratio }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'attribute'"><v-icon>delete</v-icon></v-btn>
                         </td>
@@ -409,7 +404,6 @@
                         <td class="text-xs-left">{{ props.item.users.length }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'participatedSession'"><v-icon>delete</v-icon></v-btn>
@@ -448,7 +442,6 @@
                         <td class="text-xs-left">{{ props.item.users.length }}</td>
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                        <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'participatedGroup'"><v-icon>delete</v-icon></v-btn>
@@ -511,7 +504,6 @@
                         { text: '人数', value: 'users' },
                         { text: '作成日時', value: 'created_at' },
                         { text: '更新日時', value: 'updated_at' },
-                        { text: '削除日時', value: 'deleted_at' },
                         { text: '操作', value: '' },
                     ],
                     sessions: [
@@ -526,7 +518,6 @@
                         { text: '人数', value: 'users' },
                         { text: '作成日時', value: 'created_at' },
                         { text: '更新日時', value: 'updated_at' },
-                        { text: '削除日時', value: 'deleted_at' },
                         { text: '操作', value: '' },
                     ],
                     friends: [
@@ -537,7 +528,6 @@
                         { text: 'メールアドレス', value: 'email' },
                         { text: 'unique_idでの検索', value: 'unique_id_search_flag' },
                         { text: 'usernameでの検索', value: 'username_search_flag' },
-                        { text: '削除日時', value: 'deleted_at' },
                         { text: '操作', value: '' },
                     ],
                     defaultSettings: [
@@ -549,7 +539,6 @@
                         { text: 'グループ名', value: 'group_name' },
                         { text: '作成日時', value: 'created_at' },
                         { text: '更新日時', value: 'updated_at' },
-                        { text: '削除日時', value: 'deleted_at' },
                         { text: '操作', value: '' },
                     ],
                     attributes: [
@@ -560,7 +549,6 @@
                         { text: '割合', value: 'ratio' },
                         { text: '作成日時', value: 'created_at' },
                         { text: '更新日時', value: 'updated_at' },
-                        { text: '削除日時', value: 'deleted_at' },
                         { text: '操作', value: '' },
                     ],
                 },

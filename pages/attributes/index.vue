@@ -25,7 +25,6 @@
                     <td class="text-xs-left">{{ props.item.plus_minus }}</td>
                     <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                     <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                     <td class="text-xs-left">
                         <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                     </td>
@@ -75,7 +74,6 @@
                     { text: '加減算', value: 'plus_minus' },
                     { text: '作成日時', value: 'created_at' },
                     { text: '更新日時', value: 'updated_at' },
-                    { text: '削除日時', value: 'deleted_at' },
                     { text: '操作', value: '' },
                 ],
                 attributes: [],
