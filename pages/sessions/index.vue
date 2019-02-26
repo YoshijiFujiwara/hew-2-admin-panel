@@ -38,113 +38,113 @@
             </v-data-table>
         </v-card>
 
-        <!-- カレンダー -->
-        <v-card class="mt-5">
-            <v-layout>
-                <v-flex
-                    sm4
-                    xs12
-                    class="text-sm-left text-xs-center"
-                >
-                    <v-btn @click="$refs.calendar.prev()">
-                        <v-icon
-                            dark
-                            left
-                        >
-                            keyboard_arrow_left
-                        </v-icon>
+        <!--&lt;!&ndash; カレンダー  &ndash;&gt;-->
+        <!--<v-card class="mt-5">-->
+            <!--<v-layout>-->
+                <!--<v-flex-->
+                    <!--sm4-->
+                    <!--xs12-->
+                    <!--class="text-sm-left text-xs-center"-->
+                <!--&gt;-->
+                    <!--<v-btn @click="$refs.calendar.prev()">-->
+                        <!--<v-icon-->
+                            <!--dark-->
+                            <!--left-->
+                        <!--&gt;-->
+                            <!--keyboard_arrow_left-->
+                        <!--</v-icon>-->
 
-                    </v-btn>
-                </v-flex>
-                <v-flex
-                    sm4
-                    xs12
-                    class="text-xs-center"
-                >
+                    <!--</v-btn>-->
+                <!--</v-flex>-->
+                <!--<v-flex-->
+                    <!--sm4-->
+                    <!--xs12-->
+                    <!--class="text-xs-center"-->
+                <!--&gt;-->
 
-                </v-flex>
-                <v-flex
-                    sm4
-                    xs12
-                    class="text-sm-right text-xs-center"
-                >
-                    <!--<v-btn-toggle v-model="calendarType">-->
-                        <!--<v-btn flat value="month">-->
-                            <!--月-->
-                        <!--</v-btn>-->
-                        <!--<v-btn flat value="week">-->
-                            <!--週-->
-                        <!--</v-btn>-->
-                    <!--</v-btn-toggle>-->
-                    <v-btn @click="$refs.calendar.next()">
+                <!--</v-flex>-->
+                <!--<v-flex-->
+                    <!--sm4-->
+                    <!--xs12-->
+                    <!--class="text-sm-right text-xs-center"-->
+                <!--&gt;-->
+                    <!--&lt;!&ndash;<v-btn-toggle v-model="calendarType">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<v-btn flat value="month">&ndash;&gt;-->
+                            <!--&lt;!&ndash;月&ndash;&gt;-->
+                        <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<v-btn flat value="week">&ndash;&gt;-->
+                            <!--&lt;!&ndash;週&ndash;&gt;-->
+                        <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</v-btn-toggle>&ndash;&gt;-->
+                    <!--<v-btn @click="$refs.calendar.next()">-->
 
-                        <v-icon
-                            right
-                            dark
-                        >
-                            keyboard_arrow_right
-                        </v-icon>
-                    </v-btn>
-                </v-flex>
-            </v-layout>
-            <v-flex>
-                <v-sheet height="1100">
-                    <v-calendar
-                        ref="calendar"
-                        locale="ja"
-                        v-model="start"
-                        :end="end"
-                        color="primary"
-                    >
-                        <template
-                            slot="day"
-                            slot-scope="{ date }"
-                        >
-                            <template v-for="(event, key) in eventsMap[date]">
-                                <v-menu
-                                    :key="`${event.title}-${key}`"
-                                    v-model="event.open"
-                                    full-width
-                                    offset-x
-                                >
-                                    <div
-                                        v-if="!event.time"
-                                        slot="activator"
-                                        v-ripple
-                                        class="my-event"
-                                        v-html="event.title"
-                                    ></div>
-                                    <v-card
-                                        color="grey lighten-4"
-                                        min-width="350px"
-                                        flat
-                                    >
-                                        <v-toolbar
-                                            color="primary"
-                                            dark
-                                        >
-                                            <v-toolbar-title v-html="event.title"></v-toolbar-title>
-                                            <v-spacer></v-spacer>
-                                        </v-toolbar>
-                                        <v-card-title primary-title>
-                                            <span v-html="event.details"></span>
-                                        </v-card-title>
-                                        <v-card-actions>
-                                            <v-btn
-                                                flat
-                                                color="secondary"
-                                            >
-                                               <nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: event.sessionId}}" class="blue--text">詳細</nuxt-link>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-menu>
-                            </template>
-                        </template>
-                    </v-calendar>
-                </v-sheet>
-            </v-flex>
-        </v-card>
+                        <!--<v-icon-->
+                            <!--right-->
+                            <!--dark-->
+                        <!--&gt;-->
+                            <!--keyboard_arrow_right-->
+                        <!--</v-icon>-->
+                    <!--</v-btn>-->
+                <!--</v-flex>-->
+            <!--</v-layout>-->
+            <!--<v-flex>-->
+                <!--<v-sheet height="1100">-->
+                    <!--<v-calendar-->
+                        <!--ref="calendar"-->
+                        <!--locale="ja"-->
+                        <!--v-model="start"-->
+                        <!--:end="end"-->
+                        <!--color="primary"-->
+                    <!--&gt;-->
+                        <!--<template-->
+                            <!--slot="day"-->
+                            <!--slot-scope="{ date }"-->
+                        <!--&gt;-->
+                            <!--<template v-for="(event, key) in eventsMap[date]">-->
+                                <!--<v-menu-->
+                                    <!--:key="`${event.title}-${key}`"-->
+                                    <!--v-model="event.open"-->
+                                    <!--full-width-->
+                                    <!--offset-x-->
+                                <!--&gt;-->
+                                    <!--<div-->
+                                        <!--v-if="!event.time"-->
+                                        <!--slot="activator"-->
+                                        <!--v-ripple-->
+                                        <!--class="my-event"-->
+                                        <!--v-html="event.title"-->
+                                    <!--&gt;</div>-->
+                                    <!--<v-card-->
+                                        <!--color="grey lighten-4"-->
+                                        <!--min-width="350px"-->
+                                        <!--flat-->
+                                    <!--&gt;-->
+                                        <!--<v-toolbar-->
+                                            <!--color="primary"-->
+                                            <!--dark-->
+                                        <!--&gt;-->
+                                            <!--<v-toolbar-title v-html="event.title"></v-toolbar-title>-->
+                                            <!--<v-spacer></v-spacer>-->
+                                        <!--</v-toolbar>-->
+                                        <!--<v-card-title primary-title>-->
+                                            <!--<span v-html="event.details"></span>-->
+                                        <!--</v-card-title>-->
+                                        <!--<v-card-actions>-->
+                                            <!--<v-btn-->
+                                                <!--flat-->
+                                                <!--color="secondary"-->
+                                            <!--&gt;-->
+                                               <!--<nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: event.sessionId}}" class="blue&#45;&#45;text">詳細</nuxt-link>-->
+                                            <!--</v-btn>-->
+                                        <!--</v-card-actions>-->
+                                    <!--</v-card>-->
+                                <!--</v-menu>-->
+                            <!--</template>-->
+                        <!--</template>-->
+                    <!--</v-calendar>-->
+                <!--</v-sheet>-->
+            <!--</v-flex>-->
+        <!--</v-card>-->
 
         <v-dialog
                 v-model="dialog"
@@ -299,9 +299,9 @@
                 this.updateSessions();
             })
         },
-        mounted () {
-            this.$refs.calendar.scrollToTime('08:00')
-        },
+        // mounted () {
+        //     this.$refs.calendar.scrollToTime('08:00')
+        // },
     }
 </script>
 

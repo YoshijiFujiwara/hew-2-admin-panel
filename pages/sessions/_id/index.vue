@@ -130,12 +130,41 @@
                         <td class="text-xs-left">{{ props.item.plus_minus }}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
             </v-card>
         </v-flex>
+
+        <v-dialog
+                v-model="dialog"
+                max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            color="green darken-1"
+                            flat="flat"
+                            @click="dialog = false, deleteTargetId = null"
+                    >
+                        キャンセル
+                    </v-btn>
+
+                    <v-btn
+                            color="red darken-1"
+                            flat="flat"
+                            @click="deleteSessionUser(deleteTargetId)"
+                    >
+                        削除
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
     </div>
 </template>
@@ -147,6 +176,9 @@
                 session: [],
                 sessionUsers: [],
                 sessionUserSearch: '',
+
+                deleteTargetId: null,
+                dialog: false,
 
                 headers: [
                     { text: 'id', value: 'id' },
@@ -179,6 +211,20 @@
                     .catch(err => {
                         console.log(err);
                     })
+            },
+            async deleteSessionUser(id) {
+                await this.$axios.$delete(`/admin/sessions/${this.$route.params.id}/users/${id}`)
+                    .then(res => {
+                        for (let key in this.sessionUsers) {
+                            if (this.sessionUsers[key].id == id) {
+                                this.sessionUsers.splice(key, 1);
+                            }
+                        }
+                        this.dialog = false;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
         },
         created() {
