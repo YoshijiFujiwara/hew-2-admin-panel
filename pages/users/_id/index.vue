@@ -203,7 +203,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: '' }}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'friend'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -244,7 +244,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'group'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -288,7 +288,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'session'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -329,7 +329,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'default_settings-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'default_setting'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -368,7 +368,7 @@
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'attribute'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -412,7 +412,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'participatedSession'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -451,7 +451,7 @@
                         <td class="text-xs-left">{{ (props.item.deleted_at)? props.item.deleted_at['date']: ''}}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
-                            <v-btn small fab color="error"><v-icon>delete</v-icon></v-btn>
+                            <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'participatedGroup'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
                 </v-data-table>
@@ -479,7 +479,7 @@
                     <v-btn
                         color="red darken-1"
                         flat="flat"
-                        @click="deleteFriend(deleteTargetId)"
+                        @click="deleteTarget(deleteTargetId)"
                     >
                         削除
                     </v-btn>
@@ -575,6 +575,7 @@
                 end: '2019-02-06',
                 today: '2019-01-08',
 
+                deleteTargetType: null,
                 deleteTargetId: null,
                 dialog: false,
             }
@@ -759,19 +760,118 @@
             },
 
 
-            async deleteFriend(id) {
-                await this.$axios.$delete(`/admin/users/${this.$route.params.id}/friends/${id}`)
-                    .then(res => {
-                        for (let key in this.friends) {
-                            if (this.friends[key].id == id) {
-                                this.friends.splice(key, 1);
-                            }
-                        }
-                        this.dialog = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+            async deleteTarget(id) {
+                switch (this.deleteTargetType) {
+                    case 'friend':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/friends/${id}`)
+                            .then(res => {
+                                for (let key in this.friends) {
+                                    if (this.friends[key].id == id) {
+                                        this.friends.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'group':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/groups/${id}`)
+                            .then(res => {
+                                for (let key in this.groups) {
+                                    if (this.groups[key].id == id) {
+                                        this.groups.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'session':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/sessions/${id}`)
+                            .then(res => {
+                                for (let key in this.sessions) {
+                                    if (this.sessions[key].id == id) {
+                                        this.sessions.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'default_setting':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/default_settings/${id}`)
+                            .then(res => {
+                                for (let key in this.defaultSettings) {
+                                    if (this.defaultSettings[key].id == id) {
+                                        this.defaultSettings.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'attribute':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/attributes/${id}`)
+                            .then(res => {
+                                for (let key in this.attributes) {
+                                    if (this.attributes[key].id == id) {
+                                        this.attributes.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'participatedGroup':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/guests/groups/${id}`)
+                            .then(res => {
+                                for (let key in this.participatedGroups) {
+                                    if (this.participatedGroups[key].id == id) {
+                                        this.participatedGroups.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    case 'participatedSession':
+                        await this.$axios.$delete(`/admin/users/${this.$route.params.id}/guests/sessions/${id}`)
+                            .then(res => {
+                                for (let key in this.participatedSessions) {
+                                    if (this.participatedSessions[key].id == id) {
+                                        this.participatedSessions.splice(key, 1);
+                                    }
+                                }
+                                this.dialog = false;
+                                this.deleteTargetType = null;
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                        break;
+                    default:
+                        break;
+                }
+
+
             }
         },
         created() {
