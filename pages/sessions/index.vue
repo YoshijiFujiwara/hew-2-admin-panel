@@ -52,7 +52,7 @@
                         >
                             keyboard_arrow_left
                         </v-icon>
-                        先月
+
                     </v-btn>
                 </v-flex>
                 <v-flex
@@ -67,8 +67,16 @@
                     xs12
                     class="text-sm-right text-xs-center"
                 >
+                    <!--<v-btn-toggle v-model="calendarType">-->
+                        <!--<v-btn flat value="month">-->
+                            <!--月-->
+                        <!--</v-btn>-->
+                        <!--<v-btn flat value="week">-->
+                            <!--週-->
+                        <!--</v-btn>-->
+                    <!--</v-btn-toggle>-->
                     <v-btn @click="$refs.calendar.next()">
-                        来月
+
                         <v-icon
                             right
                             dark
@@ -79,7 +87,7 @@
                 </v-flex>
             </v-layout>
             <v-flex>
-                <v-sheet height="700">
+                <v-sheet height="1100">
                     <v-calendar
                         ref="calendar"
                         locale="ja"
@@ -88,31 +96,31 @@
                         color="primary"
                     >
                         <template
-                                slot="day"
-                                slot-scope="{ date }"
+                            slot="day"
+                            slot-scope="{ date }"
                         >
                             <template v-for="event in eventsMap[date]">
                                 <v-menu
-                                        :key="event.title"
-                                        v-model="event.open"
-                                        full-width
-                                        offset-x
+                                    :key="event.title"
+                                    v-model="event.open"
+                                    full-width
+                                    offset-x
                                 >
                                     <div
-                                            v-if="!event.time"
-                                            slot="activator"
-                                            v-ripple
-                                            class="my-event"
-                                            v-html="event.title"
+                                        v-if="!event.time"
+                                        slot="activator"
+                                        v-ripple
+                                        class="my-event"
+                                        v-html="event.title"
                                     ></div>
                                     <v-card
-                                            color="grey lighten-4"
-                                            min-width="350px"
-                                            flat
+                                        color="grey lighten-4"
+                                        min-width="350px"
+                                        flat
                                     >
                                         <v-toolbar
-                                                color="primary"
-                                                dark
+                                            color="primary"
+                                            dark
                                         >
                                             <v-toolbar-title v-html="event.title"></v-toolbar-title>
                                             <v-spacer></v-spacer>
@@ -122,8 +130,8 @@
                                         </v-card-title>
                                         <v-card-actions>
                                             <v-btn
-                                                    flat
-                                                    color="secondary"
+                                                flat
+                                                color="secondary"
                                             >
                                                <nuxt-link style="text-decoration: none;" :to="{name: 'sessions-id', params: {id: event.sessionId}}" class="blue--text">詳細</nuxt-link>
                                             </v-btn>
@@ -193,6 +201,7 @@
                 dialog: false,
                 start: '2019-02-01',
                 end: '2019-02-06',
+                today: '2019-01-08',
             }
         },
         async asyncData({ $axios }) {
@@ -231,13 +240,15 @@
                     eventDatas.push({
                         sessionId: this.sessions[key].id,
                         title: this.sessions[key].name,
-                        date: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(0,10): '',
+                        date: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(0,10): null,
+                        // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
                         details: `セッションID:&nbsp;${this.sessions[key].id}<br>幹事：${this.sessions[key].manager.username}<br>参加人数:${allowCount}人<br>招待中: ${waitCount}人<br>参加拒否: ${denyCount}人`,
                         open: false
                     })
                 }
+                // console.log(eventDatas);
                 return eventDatas;
-            }
+            },
         },
         methods: {
             open (event) {
@@ -286,7 +297,10 @@
             window.Pusher.bind('user_update', response => {
                 this.updateSessions();
             })
-        }
+        },
+        mounted () {
+            this.$refs.calendar.scrollToTime('08:00')
+        },
     }
 </script>
 
