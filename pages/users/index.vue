@@ -1,75 +1,39 @@
-<template>
-    <div>
-        <v-card>
-            <v-card-title>
-                <h2>ユーザー一覧</h2>
-                <v-spacer></v-spacer>
-                <v-text-field
-                    v-model="search"
-                    append-icon="search"
-                    label="検索"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-                :headers="headers"
-                :items="users"
-                :search="search"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.id }}</td>
-                    <td class="text-xs-left">{{ props.item.unique_id }}</td>
-                    <td class="text-xs-left">{{ props.item.name }}</td>
-                    <td class="text-xs-left">{{ props.item.username }}</td>
-                    <td class="text-xs-left">{{ props.item.email }}</td>
-                    <td class="text-xs-left">
-                        <v-icon v-if="props.item.unique_id_search_flag" color="blue">radio_button_unchecked</v-icon>
-                        <v-icon v-if="!props.item.unique_id_search_flag" color="red">close</v-icon>
-                    </td>
-                    <td class="text-xs-left">
-                        <v-icon v-if="props.item.username_search_flag" color="blue">radio_button_unchecked</v-icon>
-                        <v-icon v-if="!props.item.username_search_flag" color="red">close</v-icon>
-                    </td>
-                    <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
-                    <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
-                    <td class="text-xs-left">
-                        <v-btn small fab color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
-                        <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-        </v-card>
+<template lang="pug">
+  div
+    v-card
+      v-card-title
+        h2 ユーザー一覧
+        v-spacer
+        v-text-field(v-model="search" append-icon="search" label="検索" single-line hide-details)
+      v-data-table(:headers="headers" :items="users" :search="search")
+        template(slot="items" slot-scope="props")
+          td {{ props.item.id }}
+          td.text-xs-left {{ props.item.unique_id }}
+          td.text-xs-left {{ props.item.name }}
+          td.text-xs-left {{ props.item.username }}
+          td.text-xs-left {{ props.item.email }}
+          td.text-xs-left
+            v-icon(v-if="props.item.unique_id_search_flag" color="blue") radio_button_unchecked
+            v-icon(v-if="!props.item.unique_id_search_flag" color="red") close
+          td.text-xs-left
+            v-icon(v-if="props.item.username_search_flag" color="blue") radio_button_unchecked
+            v-icon(v-if="!props.item.username_search_flag" color="red") close
+          td.text-xs-left {{ props.item.created_at['date'] }}
+          td.text-xs-left {{ props.item.updated_at['date'] }}
+          td.text-xs-left
+            v-btn(small fab color="info")
+              nuxt-link.white--text(style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}")
+                v-icon list
+            v-btn(fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true")
+              v-icon delete
 
-        <v-dialog
-            v-model="dialog"
-            max-width="290"
-        >
-            <v-card>
-                <v-card-title class="headline">項目を削除してよろしいですか？</v-card-title>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                        color="green darken-1"
-                        flat="flat"
-                        @click="dialog = false, deleteTargetId = null"
-                    >
-                        キャンセル
-                    </v-btn>
-
-                    <v-btn
-                        color="red darken-1"
-                        flat="flat"
-                        @click="deleteUser(deleteTargetId)"
-                    >
-                        削除
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </div>
+    v-dialog(v-model="dialog" max-width="290")
+      v-card
+        v-card-title.headline 項目を削除してよろしいですか?
+        v-card-actions
+          v-spacer
+          v-btn(color="green darken-1" flat="flat" @click="dialog = false, deleteTargetId = null") キャンセル
+          v-btn(color="red darken-1" flat="flat" @click="deleteUser(deleteTargetId)") 削除
 </template>
 
 <script>
