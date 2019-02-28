@@ -1,48 +1,23 @@
-<template>
-    <v-form v-model="valid" @submit.prevent="submit">
-        <v-container>
-            <v-layout column>
-                <p class="display-1">ログイン</p>
-                <span>(セキュリティのため、あのユーザーでしかログインできません)</span>
-                <v-flex
-                    xs12
-                >
-                    <v-text-field
-                        v-model="form.email"
-                        :rules="emailRules"
-                        label="メールアドレス"
-                        required
-                    ></v-text-field>
-                </v-flex>
-                    <v-flex
-                    xs12
-                >
-                    <!--<v-text-field-->
-                        <!--v-model="form.password"-->
-                        <!--:rules="passwordRules"-->
-                        <!--label="パスワード"-->
-
-                        <!--required-->
-                    <!--&gt;</v-text-field>-->
-                    <v-text-field
-                        v-model="form.password"
-                        :append-icon="passwordShow ? 'visibility_off' : 'visibility'"
-                        :rules="[rules.required, rules.min]"
-                        :type="passwordShow ? 'text' : 'password'"
-                        name="input-10-1"
-                        label="パスワード"
-                        hint="8文字以上必要"
-                        counter
-                        @click:append="passwordShow = !passwordShow"
-                    ></v-text-field>
-                </v-flex>
-                <div>
-                    <v-btn type="submit" color="primary">ログイン</v-btn>
-                    <nuxt-link style="text-decoration: none;" to="/register">登録する</nuxt-link>
-                </div>
-            </v-layout>
-        </v-container>
-    </v-form>
+<template lang="pug">
+  v-form(v-model="valid" @submit.prevent="submit")
+    v-container
+      v-layout(column)
+        p.display-1 ログイン
+        v-flex(xs12)
+          v-text-field(v-model="form.email" :rules="emailRules" label="メールアドレス" required)
+        v-flex(xs12)
+          v-text-field(v-model="form.password"
+                       :append-icon="passwordShow ? 'visibility_off' : 'visibility'"
+                       :rules="[rules.required, rules.min]"
+                       :type="passwordShow ? 'text' : 'password'"
+                       name="input-10-1"
+                       label="パスワード"
+                       hint="8文字以上必要"
+                       counter
+                       @click:append="passwordShow = !passwordShow")
+        div
+          v-btn(type="submit" color="primary") ログイン
+          nuxt-link(style="text-decoration: none;" to="/register") 登録する
 </template>
 
 <script>
