@@ -124,10 +124,11 @@
                             <v-icon v-if="props.item.join_status == 'deny'" color="red">close</v-icon>
                             <v-icon v-if="props.item.join_status == 'wait'">send</v-icon>
                         </td>
+                        <td class="text-xs-left">{{ props.item.attribute_name }}</td>
+                        <td class="text-xs-left">{{ props.item.plus_minus }}</td>
                         <td class="text-xs-left">
                             <v-icon v-if="props.item.paid" color="green">check</v-icon>
                         </td>
-                        <td class="text-xs-left">{{ props.item.plus_minus }}</td>
                         <td class="text-xs-left">
                             <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'users-id', params: {id: props.item.id}}" class="white--text"><v-icon>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab small color="error" @click="deleteTargetId = props.item.id, dialog = true"><v-icon>delete</v-icon></v-btn>
@@ -187,6 +188,7 @@
                     { text: 'メールアドレス', value: 'email' },
                     { text: '参加ステータス', value: 'join_status' },
                     { text: '支払い済みか', value: 'paid' },
+                    { text: '属性名', value: 'attribute_name' },
                     { text: '加減算', value: 'plus_minus' },
                     { text: '操作', value: '' },
                 ],
