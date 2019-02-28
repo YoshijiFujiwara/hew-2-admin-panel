@@ -29,7 +29,7 @@
       fixed
       app
       dark
-      color="pink accent-1"
+      color="primary accent-1"
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-btn
@@ -58,7 +58,7 @@
         <v-icon>menu</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn class="pink accent-1 elevation-2" @click.prevent="logout">ログアウト</v-btn>
+      <v-btn class="primary accent-1 elevation-2" @click.prevent="logout">ログアウト</v-btn>
 
     </v-toolbar>
 
@@ -66,6 +66,9 @@
       <v-container fluid>
         <nuxt />
       </v-container>
+      <v-btn v-if="scrollY > 450" id="scroll_top_btn" color="primary" fab dark @click="scrollTop()">
+        <v-icon>keyboard_arrow_up</v-icon>
+      </v-btn>
     </v-content>
     <v-navigation-drawer
       v-model="rightDrawer"
@@ -92,6 +95,8 @@
 </template>
 
 <script>
+  import goTo from 'vuetify/lib/components/Vuetify/goTo'
+
   export default {
     middleware: ['auth'],
     data() {
@@ -146,6 +151,8 @@
           },
         ],
 
+        scrollY: 0,
+
       }
     },
     methods: {
@@ -153,11 +160,32 @@
         await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
         await this.$router.push('/login');
       },
+      scrollTop() {
+        goTo(0);
+      },
+      handleScroll() {
+        this.scrollY = window.scrollY;
+      }
     },
     watch: {
       $route() {
         console.log('route changed', this.$route.name);
       }
+    },
+    created () {
+      window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.handleScroll);
     }
+
   }
 </script>
+
+<style scoped>
+  #scroll_top_btn {
+    position: fixed;
+    bottom: 40px;
+    right: 10px;
+  }
+</style>

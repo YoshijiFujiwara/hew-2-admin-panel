@@ -443,7 +443,7 @@
                         <td class="text-xs-left">{{ props.item.created_at['date'] }}</td>
                         <td class="text-xs-left">{{ props.item.updated_at['date'] }}</td>
                         <td class="text-xs-left">
-                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>list</v-icon></nuxt-link></v-btn>
+                            <v-btn fab small color="info"><nuxt-link style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text"><v-icon dark>details</v-icon></nuxt-link></v-btn>
                             <v-btn fab v-if="!(user.id == props.item.id)" small color="error" @click="deleteTargetId = props.item.id, dialog = true, deleteTargetType = 'participatedGroup'"><v-icon>delete</v-icon></v-btn>
                         </td>
                     </template>
