@@ -1,97 +1,40 @@
-<template>
-  <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar
-      :clipped-left="clipped"
-      fixed
-      app
-      dark
-      color="primary accent-1"
-    >
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>menu</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn class="primary accent-1 elevation-2" @click.prevent="logout">ログアウト</v-btn>
+<template lang="pug">
+  v-app
+    v-navigation-drawer(v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app)
+      v-list
+        v-list-tile(v-for="(item, i) in items" :key="i" :to="item.to" router exact)
+          v-list-tile-action
+            v-icon {{ item.icon }}
+          v-list-tile-content
+            v-list-tile-title(v-text="item.title")
+    v-toolbar(:clipped-left="clipped" fixed app dark color="primary accent-1")
+      v-toolbar-side-icon(@click="drawer = !drawer")
+      v-btn(icon @click.stop="miniVariant = !miniVariant")
+        v-icon {{ `chevron_${miniVariant ? 'right' : 'left'}` }}
+      v-btn(icon @click.stop="clipped = !clipped")
+        v-icon web
+      v-btn(icon @click.stop="fixed = !fixed")
+        v-icon remove
+      v-toolbar-title(v-text="title")
+      v-btn(icon @click.stop="rightDrawer = !rightDrawer")
+        v-icon menu
+      v-spacer
+      v-btn.primary.accent-1.elevation-2(@click.prevent="logout") ログアウト
 
-    </v-toolbar>
+    v-content
+      v-container(fluid)
+        nuxt
+      v-btn#scroll_top_btn(v-if="scrollY > 450" color="primary" fab dark @click="scrollTop()")
+        v-icon keyboard_arrow_up
 
-    <v-content>
-      <v-container fluid>
-        <nuxt />
-      </v-container>
-      <v-btn v-if="scrollY > 450" id="scroll_top_btn" color="primary" fab dark @click="scrollTop()">
-        <v-icon>keyboard_arrow_up</v-icon>
-      </v-btn>
-    </v-content>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
-            <v-icon light>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :fixed="fixed"
-      app
-    >
-      <span>&copy; 2019</span>
-    </v-footer>
-  </v-app>
+    v-navigation-drawer(v-model="rightDrawer" :right="right" temporary fixed)
+      v-list
+        v-list-tile(@click.native="right = !right")
+          v-list-tile-action
+            v-icon(light) compare_arrows
+          v-list-tile-title Switch drawer (click me)
+
+    v-footer(:fixed="fixed" app): span &copy; 2019
 </template>
 
 <script>
@@ -182,10 +125,9 @@
   }
 </script>
 
-<style scoped>
-  #scroll_top_btn {
-    position: fixed;
-    bottom: 40px;
-    right: 10px;
-  }
+<style scoped lang="stylus">
+  #scroll_top_btn
+    position fixed
+    bottom 40px
+    right 10px
 </style>
