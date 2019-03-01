@@ -13,6 +13,7 @@
           td.text-xs-left {{ props.item.users.length }}
           td.text-xs-left {{ props.item.created_at['date'] }}
           td.text-xs-left {{ props.item.updated_at['date'] }}
+          td.text-xs-left
             v-btn(fab small color="info")
               nuxt-link(style="text-decoration: none;" :to="{name: 'groups-id', params: {id: props.item.id}}" class="white--text")
                 v-icon details
