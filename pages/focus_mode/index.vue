@@ -154,6 +154,45 @@
         if (managerFrameNumber !== 0 && userFrameNumber !== 0) {
           this.animation(managerFrameNumber, userFrameNumber, 'send');
         }
+      },
+      replayAnimation(userId, managerId, reply) {
+        console.log(managerId + 'and' + userId);
+        // managerとuserのフレームIDを特定する
+        let managerFrameNumber = 0;
+        let userFrameNumber = 0;
+
+        // todo 複数のフレームで、同一のuser_idがある場合には対応してないが、問題ないね
+        for (let key in this.frames) {
+          console.log(key);
+          console.log(this.frames[key]);
+          if (this.frames[key].user_id == managerId) {
+            managerFrameNumber = key;
+          }
+          if (this.frames[key].user_id == userId) {
+            userFrameNumber = key;
+          }
+        }
+
+        console.log('manager, user');
+        console.log(managerFrameNumber, userFrameNumber);
+
+        let iconName = '';
+        switch (reply) {
+          case 'allow':
+            iconName = 'okey';
+            break;
+          case 'deny':
+            iconName = 'no';
+            break;
+          case 'wait':
+            iconName = 'send';
+            break;
+        }
+
+        // 両方のフレームが特定できた場合のみアニメーションを実行する
+        if (managerFrameNumber !== 0 && userFrameNumber !== 0) {
+          this.animation(managerFrameNumber, userFrameNumber, iconName);
+        }
       }
     },
     created() {
@@ -161,23 +200,30 @@
       // セッションへの招待
       window.Pusher.bind('focus_session_invitation', response => {
         console.log(response);
-        const managerId = response.message.manager_id;
-        const sessionId = response.message.session_id;
-        const sessionName = response.message.session_name;
-        const userIds = response.message.user_ids;
+        const contents = response.message;
+        const managerId = contents.manager_id;
+        const sessionId = contents.session_id;
+        const sessionName = contents.session_name;
+        const userIds = contents.user_ids;
         for (let i = 0; i < userIds.length; i++) {
           this.invitationAnimation(managerId, userIds[i]);
         }
       })
       // セッション情報のアップデート
       window.Pusher.bind('focus_session_update', response => {
-        console.log(response);
+
 
       })
       // セッションの招待に対する返事
       window.Pusher.bind('focus_session_reply', response => {
-        console.log(response);
+        const contents = response.message;
+        const managerId = contents.manager_id;
+        const sessionId = contents.session_id;
+        const sessionName = contents.session_name;
+        const userId = contents.user_id;
+        const reply = contents.reply;
 
+        this.replayAnimation(managerId, userId, reply);
       })
     },
   }
