@@ -6,9 +6,9 @@
       v-card#focus_base
         vue-draggable-resizable(v-for="n in frameKeys" :key="n" :w="200" :h="300" @activated="target(n)" @dragging="onDrag" @resizing="onResize" :parent="true")
           div
-            p フレームナンバー {{ n }}
+            p フレームナンバー {{ n }} {{ frames[n].user_id }}
               v-btn(fab dark color="error" small): v-icon(@click.prevent="deleteTargetFrame = n, dialog = true") delete
-          v-select(:items="userNames" box label="ユーザー")
+          v-select(:items="users" item-text="username" item-value="id" box label="ユーザー" v-model="frames[n].user_id")
     v-dialog(v-model="dialog" max-width="290")
       v-card
         v-card-title.headline フレームナンバー{{ deleteTargetFrame }}を削除してよろしいですか?
@@ -49,17 +49,18 @@
         this.lastFrameKey++;
         this.frameKeys.push(this.lastFrameKey);
         this.frames[this.lastFrameKey] = {
+          user_id: null,
           width: 200,
           height: 300,
           x: 0,
           y: 0
         }
-        console.log(this.frameKeys);
-        console.log(this.frames);
       },
       target(n) {
         this.targetFrame = n;
-        console.log(this.targetFrame);
+      },
+      test(id) {
+        alert(id);
       },
       onResize: function (x, y, width, height) {
         this.frames[this.targetFrame].x = x;
@@ -70,7 +71,6 @@
       onDrag: function (x, y) {
         this.frames[this.targetFrame].x = x;
         this.frames[this.targetFrame].y = y;
-        console.log(this.frames);
       },
       deleteFrame(deleteFrameKey) {
         this.frameKeys = this.frameKeys.filter(n => n !== deleteFrameKey);
@@ -78,15 +78,6 @@
         this.dialog = false;
       }
     },
-    computed: {
-      userNames() {
-        let userNames = [];
-        for (let i = 0; i < this.users.length; i++) {
-          userNames.push(this.users[i].username);
-        }
-        return userNames;
-      }
-    }
   }
 </script>
 
