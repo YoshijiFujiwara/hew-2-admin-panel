@@ -58,7 +58,7 @@
                 });
                 this.$router.push('/');
             },
-        },      
+        },
     }
 </script>
 

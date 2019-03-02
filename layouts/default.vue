@@ -7,7 +7,7 @@
             v-icon {{ item.icon }}
           v-list-tile-content
             v-list-tile-title(v-text="item.title")
-    v-toolbar(:clipped-left="clipped" fixed app dark color="primary accent-1")
+    v-toolbar(:clipped-left="clipped" fixed app dark color="red lighten-1")
       v-toolbar-side-icon(@click="drawer = !drawer")
       v-btn(icon @click.stop="miniVariant = !miniVariant")
         v-icon {{ `chevron_${miniVariant ? 'right' : 'left'}` }}
@@ -19,9 +19,9 @@
       v-btn(icon @click.stop="rightDrawer = !rightDrawer")
         v-icon menu
       v-spacer
-      v-btn.primary.accent-1.elevation-2(@click.prevent="logout") ログアウト
+      v-btn.brown.darken-1.elevation-2(@click.prevent="logout") ログアウト
 
-    v-content
+    v-content#admin_content_wrapper
       v-container(fluid)
         nuxt
       v-btn#scroll_top_btn(v-if="scrollY > 450" color="primary" fab dark @click="scrollTop()")
@@ -130,4 +130,7 @@
     position fixed
     bottom 40px
     right 10px
+
+  #admin_content_wrapper
+    background-color #FFECEC
 </style>
