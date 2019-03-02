@@ -13,4 +13,4 @@ const Validation = {
     }
 }
 
-Vue.use(Validation);
+Vue.use(Validation) ;
