@@ -29,7 +29,7 @@
           v-spacer
           v-btn(color="green darken-1" flat="flat" @click="dialog = false, deleteTargetId = null") キャンセル
           v-btn(color="red darken-1" flat="flat" @click="deleteFrame(deleteTargetFrame)") 削除
-    v-btn(@click.prevent="animationTest()")
+    <!--v-btn(@click.prevent="animationTest()")-->
 
 </template>
 
@@ -57,11 +57,6 @@
       console.log('data arrived')
       return {
         users: data,
-      }
-    },
-    mounted() {
-      for (let i = 0; i < 7; i++) {
-        this.addFrame();
       }
     },
     methods: {

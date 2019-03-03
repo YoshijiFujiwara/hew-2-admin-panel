@@ -13,11 +13,11 @@
         v-icon {{ `chevron_${miniVariant ? 'right' : 'left'}` }}
       v-btn(icon @click.stop="clipped = !clipped")
         v-icon web
-      v-btn(icon @click.stop="fixed = !fixed")
-        v-icon remove
+      <!--v-btn(icon @click.stop="fixed = !fixed")-->
+        <!--v-icon remove-->
       v-toolbar-title(v-text="title")
-      v-btn(icon @click.stop="rightDrawer = !rightDrawer")
-        v-icon menu
+      <!--v-btn(icon @click.stop="rightDrawer = !rightDrawer")-->
+        <!--v-icon menu-->
       v-spacer
       v-btn.brown.darken-1.elevation-2(@click.prevent="logout") ログアウト
 
@@ -34,7 +34,7 @@
             v-icon(light) compare_arrows
           v-list-tile-title Switch drawer (click me)
 
-    v-footer(:fixed="fixed" app): span &copy; 2019
+    v-footer(:fixed="fixed" app): span &copy; 2019 HEW ホイッスル
 </template>
 
 <script>
@@ -132,5 +132,5 @@
     right 10px
 
   #admin_content_wrapper
-    background-color #FFECEC
+    background-color #FFEFFE
 </style>
