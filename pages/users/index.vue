@@ -37,77 +37,76 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                headers: [
-                    { text: 'id', value: 'id' },
-                    { text: 'ユニークID', value: 'unique_id' },
-                    { text: '名前', value: 'name' },
-                    { text: 'ユーザー名', value: 'username' },
-                    { text: 'メールアドレス', value: 'email' },
-                    { text: 'unique_idでの検索', value: 'unique_id_search_flag' },
-                    { text: 'usernameでの検索', value: 'username_search_flag' },
-                    { text: '作成日時', value: 'created_at' },
-                    { text: '更新日時', value: 'updated_at' },
-                    { text: '操作', value: '' },
-                ],
-                users: [],
-                dialog: false,
-                deleteTargetId: null,
-                search: '',
-            }
-        },
-        async asyncData({ $axios }) {
-            let { data } = await $axios.$get('/admin/users');
-            console.log('data arrived')
-            return {
-                users: data,
-            }
-        },
-        methods: {
-            async deleteUser(id) {
-                await this.$axios.$delete(`/admin/users/${id}`)
-                    .then(res => {
-                        for (let key in this.users) {
-                            if (this.users[key].id == id) {
-                                this.users.splice(key, 1);
-                                this.users.splice(key, 1);
-                            }
-                        }
-                        this.dialog = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-
-            },
-            async updateUsers() {
-                await this.$axios.$get('/admin/users')
-                    .then(res => {
-                        console.log(res)
-                        this.users = res.data;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            },
-        },
-        created() {
-            window.Pusher.subscribe('admin_channel');
-            window.Pusher.bind('user_create', response => {
-                this.updateUsers();
-            })
-            window.Pusher.bind('user_update', response => {
-                this.updateUsers();
-            })
-            window.Pusher.bind('user_delete', response => {
-                this.updateUsers();
-            })
-        },
+export default {
+  data() {
+    return {
+      headers: [
+        { text: "id", value: "id" },
+        { text: "ユニークID", value: "unique_id" },
+        { text: "名前", value: "name" },
+        { text: "ユーザー名", value: "username" },
+        { text: "メールアドレス", value: "email" },
+        { text: "unique_idでの検索", value: "unique_id_search_flag" },
+        { text: "usernameでの検索", value: "username_search_flag" },
+        { text: "作成日時", value: "created_at" },
+        { text: "更新日時", value: "updated_at" },
+        { text: "操作", value: "" }
+      ],
+      users: [],
+      dialog: false,
+      deleteTargetId: null,
+      search: ""
     }
+  },
+  async asyncData({ $axios }) {
+    let { data } = await $axios.$get("/admin/users")
+    console.log("data arrived")
+    return {
+      users: data
+    }
+  },
+  created() {
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("user_create", response => {
+      this.updateUsers()
+    })
+    window.Pusher.bind("user_update", response => {
+      this.updateUsers()
+    })
+    window.Pusher.bind("user_delete", response => {
+      this.updateUsers()
+    })
+  },
+  methods: {
+    async deleteUser(id) {
+      await this.$axios
+        .$delete(`/admin/users/${id}`)
+        .then(res => {
+          for (let key in this.users) {
+            if (this.users[key].id == id) {
+              this.users.splice(key, 1)
+              this.users.splice(key, 1)
+            }
+          }
+          this.dialog = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async updateUsers() {
+      await this.$axios
+        .$get("/admin/users")
+        .then(res => {
+          console.log(res)
+          this.users = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
+}
 </script>
 
-<style>
-
-</style>
+<style></style>

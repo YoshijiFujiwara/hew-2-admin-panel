@@ -31,80 +31,78 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        headers: [
-          {text: 'id', value: 'id'},
-          {text: '幹事ユーザー名', value: 'manager'},
-          {text: '名前', value: 'name'},
-          {text: '何時間後か', value: 'timer'},
-          {text: 'グループID', value: 'group_id'},
-          {text: 'グループ名', value: 'group_name'},
-          {text: '作成日時', value: 'created_at'},
-          {text: '更新日時', value: 'updated_at'},
-          {text: '操作', value: ''},
-        ],
-        defaultSettings: [],
-        search: '',
-        dialog: false,
-      }
-    },
-    async asyncData({$axios}) {
-      let {data} = await $axios.$get('/admin/default_settings');
-      return {
-        defaultSettings: data,
-      }
-    },
-    methods: {
-      async updateDefaultSettings() {
-        await this.$axios.$get('/admin/default_settings')
-          .then(res => {
-            console.log(res)
-            this.defaultSettings = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      async deleteDefaultSetting(id) {
-        await this.$axios.$delete(`/admin/default_settings/${id}`)
-          .then(res => {
-            for (let key in this.defaultSettings) {
-              if (this.defaultSettings[key].id == id) {
-                this.defaultSettings.splice(key, 1);
-              }
-            }
-            this.dialog = false;
-          })
-          .catch(err => {
-            this.dialog = false;
-            console.log(err);
-          });
-
-      },
-    },
-    created() {
-      window.Pusher.subscribe('admin_channel');
-      window.Pusher.bind('default_setting_create', response => {
-        this.updateDefaultSettings();
-      })
-      window.Pusher.bind('default_setting_update', response => {
-        this.updateDefaultSettings();
-      })
-      window.Pusher.bind('default_setting_delete', response => {
-        this.updateDefaultSettings();
-      })
-
-      // userネームの更新があるかもしれません
-      window.Pusher.bind('user_update', response => {
-        this.updateDefaultSettings();
-      })
+export default {
+  data() {
+    return {
+      headers: [
+        { text: "id", value: "id" },
+        { text: "幹事ユーザー名", value: "manager" },
+        { text: "名前", value: "name" },
+        { text: "何時間後か", value: "timer" },
+        { text: "グループID", value: "group_id" },
+        { text: "グループ名", value: "group_name" },
+        { text: "作成日時", value: "created_at" },
+        { text: "更新日時", value: "updated_at" },
+        { text: "操作", value: "" }
+      ],
+      defaultSettings: [],
+      search: "",
+      dialog: false
     }
+  },
+  async asyncData({ $axios }) {
+    let { data } = await $axios.$get("/admin/default_settings")
+    return {
+      defaultSettings: data
+    }
+  },
+  created() {
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("default_setting_create", response => {
+      this.updateDefaultSettings()
+    })
+    window.Pusher.bind("default_setting_update", response => {
+      this.updateDefaultSettings()
+    })
+    window.Pusher.bind("default_setting_delete", response => {
+      this.updateDefaultSettings()
+    })
 
+    // userネームの更新があるかもしれません
+    window.Pusher.bind("user_update", response => {
+      this.updateDefaultSettings()
+    })
+  },
+  methods: {
+    async updateDefaultSettings() {
+      await this.$axios
+        .$get("/admin/default_settings")
+        .then(res => {
+          console.log(res)
+          this.defaultSettings = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async deleteDefaultSetting(id) {
+      await this.$axios
+        .$delete(`/admin/default_settings/${id}`)
+        .then(res => {
+          for (let key in this.defaultSettings) {
+            if (this.defaultSettings[key].id == id) {
+              this.defaultSettings.splice(key, 1)
+            }
+          }
+          this.dialog = false
+        })
+        .catch(err => {
+          this.dialog = false
+          console.log(err)
+        })
+    }
   }
+}
 </script>
 
-<style>
-
-</style>
+<style></style>

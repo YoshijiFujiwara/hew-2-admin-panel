@@ -21,37 +21,36 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        sendMessage: '',
-        deviceToken: '',
-        deviceTokenRules: [
-          v => !!v || '送信先デバイスIDが入力されていません',
-        ],
-        snackbar: false,
-        y: 'top',
-        x: null,
-        mode: '',
-        timeout: 6000,
-        text: 'プッシュ!'
-      }
-    },
-    methods: {
-      async submit() {
-        await this.$axios.$post('/admin/test/notification', {
-          'sendMessage': this.sendMessage,
-          'deviceToken': this.deviceToken
-        }).then(res => {
-          this.snackbar = true;
-        }).catch(err => {
-          console.log(err);
-        });
-      }
+export default {
+  data() {
+    return {
+      sendMessage: "",
+      deviceToken: "",
+      deviceTokenRules: [v => !!v || "送信先デバイスIDが入力されていません"],
+      snackbar: false,
+      y: "top",
+      x: null,
+      mode: "",
+      timeout: 6000,
+      text: "プッシュ!"
+    }
+  },
+  methods: {
+    async submit() {
+      await this.$axios
+        .$post("/admin/test/notification", {
+          sendMessage: this.sendMessage,
+          deviceToken: this.deviceToken
+        })
+        .then(res => {
+          this.snackbar = true
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
+}
 </script>
 
-<style>
-
-</style>
+<style></style>

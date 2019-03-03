@@ -1,81 +1,75 @@
-const pkg = require('./package')
+const pkg = require("./package")
 
+const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin")
 
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
-
-let generateDir = {};
-if (process.env.DEPLOY_ENV === 'S3'){
+let generateDir = {}
+if (process.env.DEPLOY_ENV === "S3") {
   generateDir = {
-    generate: { dir: "dist/app" },
+    generate: { dir: "dist/app" }
   }
 }
 
 module.exports = {
-  mode: 'spa',
+  mode: "spa",
   ...generateDir,
 
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: pkg.name,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
       }
-    ],
+    ]
   },
 
   /*
-  ** Customize the progress-bar color
-  */
+   ** Customize the progress-bar color
+   */
   loading: {
-    color: 'blue',
-    height: '5px'
+    color: "blue",
+    height: "5px"
   },
 
   /*
-  ** Global CSS
-  */
-  css: [
-    '~/assets/style/app.styl'
-  ],
+   ** Global CSS
+   */
+  css: ["~/assets/style/app.styl"],
 
   router: {
-    middleware: ['clearValidationErrors']
+    middleware: ["clearValidationErrors"]
   },
 
   /*
-  ** Plugins to load before mounting the App
-  */
+   ** Plugins to load before mounting the App
+   */
   plugins: [
-    '@/plugins/vuetify',
-    '@/plugins/pusher',
-    './plugins/mixins/user.js',
-    './plugins/mixins/validation.js',
-    './plugins/axios.js',
+    "@/plugins/vuetify",
+    "@/plugins/pusher",
+    "./plugins/mixins/user.js",
+    "./plugins/mixins/validation.js",
+    "./plugins/axios.js"
   ],
 
   /*
-  ** Nuxt.js modules
-  */
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/auth',
-  ],
+   ** Nuxt.js modules
+   */
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth"],
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    // baseURL: 'https://laravelv2-dot-eventer-1543384121468.appspot.com/api',
-    baseURL: 'http://localhost/api',
+    baseURL: "https://laravelv2-dot-eventer-1543384121468.appspot.com/api"
+    // baseURL: 'http://localhost/api',
   },
 
   // 認証
@@ -83,23 +77,22 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-
           /**
            * laravel側のapiのルーティングに対応するように書きましょう
            */
           login: {
-            url: 'admin/auth/login',
-            method: 'post',
+            url: "admin/auth/login",
+            method: "post",
             propertyName: "access_token"
           },
           user: {
-            url: 'auth/me',
-            method: 'post',
-            propertyName: 'data'
+            url: "auth/me",
+            method: "post",
+            propertyName: "data"
           },
           logout: {
-            url: 'auth/logout',
-            method: 'post'
+            url: "auth/logout",
+            method: "post"
           }
         }
       }
@@ -107,25 +100,33 @@ module.exports = {
   },
 
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     // vendor: [
     //   'gsap'
     // ],
-    transpile: ['vuetify/lib'],
+    transpile: ["vuetify/lib"],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {
       stylus: {
         import: ["~assets/style/variables.styl"]
       }
     },
-    
+
     /*
-    ** You can extend webpack config here
-    */
+     ** You can extend webpack config here
+     */
     extend(config, ctx) {
-      
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: "pre",
+          test: /\.(js|vue)$/,
+          loader: "eslint-loader",
+          exclude: /(node_modules)/
+        })
+      }
     }
   }
 }

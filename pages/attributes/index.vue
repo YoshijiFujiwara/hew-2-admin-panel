@@ -26,72 +26,71 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        headers: [
-          {text: 'id', value: 'id'},
-          {text: '幹事ユーザー名', value: 'manager'},
-          {text: '属性名', value: 'name'},
-          {text: '加減算', value: 'plus_minus'},
-          {text: '作成日時', value: 'created_at'},
-          {text: '更新日時', value: 'updated_at'},
-          {text: '操作', value: ''},
-        ],
-        attributes: [],
-        search: '',
-        dialog: false,
-      }
+export default {
+  data() {
+    return {
+      headers: [
+        { text: "id", value: "id" },
+        { text: "幹事ユーザー名", value: "manager" },
+        { text: "属性名", value: "name" },
+        { text: "加減算", value: "plus_minus" },
+        { text: "作成日時", value: "created_at" },
+        { text: "更新日時", value: "updated_at" },
+        { text: "操作", value: "" }
+      ],
+      attributes: [],
+      search: "",
+      dialog: false
+    }
+  },
+  async asyncData({ $axios }) {
+    let { data } = await $axios.$get("/admin/attributes")
+    return {
+      attributes: data
+    }
+  },
+  created() {
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("attribute_create", response => {
+      this.updateAttributes()
+    })
+    window.Pusher.bind("attribute_update", response => {
+      this.updateAttributes()
+    })
+    window.Pusher.bind("attribute_delete", response => {
+      this.updateAttributes()
+    })
+  },
+  methods: {
+    async updateAttributes() {
+      await this.$axios
+        .$get("/admin/attributes")
+        .then(res => {
+          console.log(res)
+          this.attributes = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    async asyncData({$axios}) {
-      let {data} = await $axios.$get('/admin/attributes');
-      return {
-        attributes: data,
-      }
-    },
-    methods: {
-      async updateAttributes() {
-        await this.$axios.$get('/admin/attributes')
-          .then(res => {
-            console.log(res)
-            this.attributes = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      async deleteAttribute(id) {
-        await this.$axios.$delete(`/admin/attributes/${id}`)
-          .then(res => {
-            for (let key in this.attributes) {
-              if (this.attributes[key].id == id) {
-                this.attributes.splice(key, 1);
-              }
+    async deleteAttribute(id) {
+      await this.$axios
+        .$delete(`/admin/attributes/${id}`)
+        .then(res => {
+          for (let key in this.attributes) {
+            if (this.attributes[key].id == id) {
+              this.attributes.splice(key, 1)
             }
-            this.dialog = false;
-          })
-          .catch(err => {
-            this.dialog = false;
-            console.log(err);
-          });
-
-      },
-    },
-    created() {
-      window.Pusher.subscribe('admin_channel');
-      window.Pusher.bind('attribute_create', response => {
-        this.updateAttributes();
-      })
-      window.Pusher.bind('attribute_update', response => {
-        this.updateAttributes();
-      })
-      window.Pusher.bind('attribute_delete', response => {
-        this.updateAttributes();
-      })
+          }
+          this.dialog = false
+        })
+        .catch(err => {
+          this.dialog = false
+          console.log(err)
+        })
     }
   }
+}
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -1,37 +1,32 @@
 <template>
   <div>
-    <v-layout
-      row
-      justify-center
-      align-center
-    >
+    <v-layout row justify-center align-center>
       <v-flex xs6 class="mx-1">
-        <v-card
-                class="mt-3 mx-auto"
-        >
+        <v-card class="mt-3 mx-auto">
           <v-sheet
-              class="v-sheet--offset mx-auto"
-              color="cyan"
-              elevation="12"
-              max-width="calc(100% - 32px)"
+            class="v-sheet--offset mx-auto"
+            color="cyan"
+            elevation="12"
+            max-width="calc(100% - 32px)"
           >
             <v-sparkline
-                :labels="labels"
-                :value="value"
-                color="white"
-                line-width="2"
-                padding="16"
-            ></v-sparkline>
+              :labels="labels"
+              :value="value"
+              color="white"
+              line-width="2"
+              padding="16"
+            />
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">ユーザー登録</div>
-            <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-                    class="mr-2"
-                    small
-            >
+            <div class="title font-weight-light mb-2">
+              ユーザー登録
+            </div>
+            <div class="subheading font-weight-light grey--text">
+              Last Campaign Performance
+            </div>
+            <v-divider class="my-2" />
+            <v-icon class="mr-2" small>
               mdi-clock
             </v-icon>
             <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
@@ -39,32 +34,31 @@
         </v-card>
       </v-flex>
       <v-flex xs6 class="mx-1">
-        <v-card
-                class="mt-3 mx-auto"
-        >
+        <v-card class="mt-3 mx-auto">
           <v-sheet
-                  class="v-sheet--offset mx-auto"
-                  color="cyan"
-                  elevation="12"
-                  max-width="calc(100% - 32px)"
+            class="v-sheet--offset mx-auto"
+            color="cyan"
+            elevation="12"
+            max-width="calc(100% - 32px)"
           >
             <v-sparkline
-                    :labels="labels"
-                    :value="value"
-                    color="white"
-                    line-width="2"
-                    padding="16"
-            ></v-sparkline>
+              :labels="labels"
+              :value="value"
+              color="white"
+              line-width="2"
+              padding="16"
+            />
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">セッション作成</div>
-            <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-                    class="mr-2"
-                    small
-            >
+            <div class="title font-weight-light mb-2">
+              セッション作成
+            </div>
+            <div class="subheading font-weight-light grey--text">
+              Last Campaign Performance
+            </div>
+            <v-divider class="my-2" />
+            <v-icon class="mr-2" small>
               mdi-clock
             </v-icon>
             <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
@@ -73,39 +67,33 @@
       </v-flex>
     </v-layout>
 
-    <v-layout
-      class="mt-4"
-      row
-      justify-center
-      align-center
-    >
+    <v-layout class="mt-4" row justify-center align-center>
       <v-flex xs4 class="mx-1">
-        <v-card
-                class="mt-3 mx-auto"
-        >
+        <v-card class="mt-3 mx-auto">
           <v-sheet
-                  class="v-sheet--offset mx-auto"
-                  color="cyan"
-                  elevation="12"
-                  max-width="calc(100% - 32px)"
+            class="v-sheet--offset mx-auto"
+            color="cyan"
+            elevation="12"
+            max-width="calc(100% - 32px)"
           >
             <v-sparkline
-                    :labels="labels"
-                    :value="value"
-                    color="white"
-                    line-width="2"
-                    padding="16"
-            ></v-sparkline>
+              :labels="labels"
+              :value="value"
+              color="white"
+              line-width="2"
+              padding="16"
+            />
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">グループ</div>
-            <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-                    class="mr-2"
-                    small
-            >
+            <div class="title font-weight-light mb-2">
+              グループ
+            </div>
+            <div class="subheading font-weight-light grey--text">
+              Last Campaign Performance
+            </div>
+            <v-divider class="my-2" />
+            <v-icon class="mr-2" small>
               mdi-clock
             </v-icon>
             <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
@@ -113,32 +101,31 @@
         </v-card>
       </v-flex>
       <v-flex xs4 class="mx-1">
-        <v-card
-                class="mt-3 mx-auto"
-        >
+        <v-card class="mt-3 mx-auto">
           <v-sheet
-                  class="v-sheet--offset mx-auto"
-                  color="cyan"
-                  elevation="12"
-                  max-width="calc(100% - 32px)"
+            class="v-sheet--offset mx-auto"
+            color="cyan"
+            elevation="12"
+            max-width="calc(100% - 32px)"
           >
             <v-sparkline
-                    :labels="labels"
-                    :value="value"
-                    color="white"
-                    line-width="2"
-                    padding="16"
-            ></v-sparkline>
+              :labels="labels"
+              :value="value"
+              color="white"
+              line-width="2"
+              padding="16"
+            />
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">デフォルト設定</div>
-            <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-                    class="mr-2"
-                    small
-            >
+            <div class="title font-weight-light mb-2">
+              デフォルト設定
+            </div>
+            <div class="subheading font-weight-light grey--text">
+              Last Campaign Performance
+            </div>
+            <v-divider class="my-2" />
+            <v-icon class="mr-2" small>
               mdi-clock
             </v-icon>
             <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
@@ -146,32 +133,31 @@
         </v-card>
       </v-flex>
       <v-flex xs4 class="mx-1">
-        <v-card
-                class="mt-3 mx-auto"
-        >
+        <v-card class="mt-3 mx-auto">
           <v-sheet
-                  class="v-sheet--offset mx-auto"
-                  color="cyan"
-                  elevation="12"
-                  max-width="calc(100% - 32px)"
+            class="v-sheet--offset mx-auto"
+            color="cyan"
+            elevation="12"
+            max-width="calc(100% - 32px)"
           >
             <v-sparkline
-                    :labels="labels"
-                    :value="value"
-                    color="white"
-                    line-width="2"
-                    padding="16"
-            ></v-sparkline>
+              :labels="labels"
+              :value="value"
+              color="white"
+              line-width="2"
+              padding="16"
+            />
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">属性</div>
-            <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-                    class="mr-2"
-                    small
-            >
+            <div class="title font-weight-light mb-2">
+              属性
+            </div>
+            <div class="subheading font-weight-light grey--text">
+              Last Campaign Performance
+            </div>
+            <v-divider class="my-2" />
+            <v-icon class="mr-2" small>
               mdi-clock
             </v-icon>
             <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
@@ -218,12 +204,11 @@
     <!--</v-flex>-->
     <!--</v-layout>-->
   </div>
-
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import Logo from "~/components/Logo.vue"
+import VuetifyLogo from "~/components/VuetifyLogo.vue"
 
 export default {
   components: {
@@ -231,33 +216,15 @@ export default {
     VuetifyLogo
   },
   data: () => ({
-    labels: [
-      '12am',
-      '3am',
-      '6am',
-      '9am',
-      '12pm',
-      '3pm',
-      '6pm',
-      '9pm'
-    ],
-    value: [
-      200,
-      675,
-      410,
-      390,
-      310,
-      460,
-      250,
-      240
-    ]
+    labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"],
+    value: [200, 675, 410, 390, 310, 460, 250, 240]
   })
 }
 </script>
 
 <style>
-  .v-sheet--offset {
-    top: -24px;
-    position: relative;
-  }
+.v-sheet--offset {
+  top: -24px;
+  position: relative;
+}
 </style>

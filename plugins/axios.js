@@ -1,19 +1,19 @@
 export default function({ $axios, store }) {
-    // エラーハンドリング
-    $axios.onError(error => {
-        const code = parseInt(error.response && error.response.status)
-        
-        // console.log('SSSSSSSSS')
-        // console.log(error.response.data)
-        if (code == 409) {
-            store.dispatch('validation/setErrors', error.response.data.error);
-        } else if (code > 299) {
-            store.dispatch('validation/setErrors', error.response.data.error);
-        }
-        return Promise.reject(error);
-    });
+  // エラーハンドリング
+  $axios.onError(error => {
+    const code = parseInt(error.response && error.response.status)
 
-    $axios.onRequest(() => {
-        store.dispatch('validation/clearErrors');
-    });
+    // console.log('SSSSSSSSS')
+    // console.log(error.response.data)
+    if (code == 409) {
+      store.dispatch("validation/setErrors", error.response.data.error)
+    } else if (code > 299) {
+      store.dispatch("validation/setErrors", error.response.data.error)
+    }
+    return Promise.reject(error)
+  })
+
+  $axios.onRequest(() => {
+    store.dispatch("validation/clearErrors")
+  })
 }

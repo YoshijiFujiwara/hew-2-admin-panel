@@ -21,46 +21,45 @@
 </template>
 
 <script>
-    // import {mapGetters} from 'vuex';
-    export default {
-        layout: 'guest',
-        // computed: {
-        //     ...mapGetters({
-        //         loggedIn: 'auth/authenticated'
-        //     }),
-        // },
-        data: () => ({
-            valid: false,
-            form: {
-                password: '',
-                email: '',
-            },
-            passwordRules: [
-                v => !!v || 'パスワードの入力が必須です',
-            ],
-            emailRules: [
-                v => !!v || 'メールアドレスの入力が必須です',
-                v => /.+@.+/.test(v) || 'メールアドレスの形式が正しくありません'
-            ],
-            passwordShow: false,
-            rules: {
-                required: value => !!value || '入力が必須です。',
-                min: v => v.length >= 8 || '最低８文字必要です',
-                emailMatch: () => ('The email and password you entered don\'t match')
-            }
-        }),
-        methods: {
-            async submit() {
-                await this.$auth.loginWith("local", {
-                    data: this.form
-                }).catch(err => {
-                    console.log(err);
-                });
-                this.$router.push('/');
-            },
-        },
+// import {mapGetters} from 'vuex';
+export default {
+  layout: "guest",
+  // computed: {
+  //     ...mapGetters({
+  //         loggedIn: 'auth/authenticated'
+  //     }),
+  // },
+  data: () => ({
+    valid: false,
+    form: {
+      password: "",
+      email: ""
+    },
+    passwordRules: [v => !!v || "パスワードの入力が必須です"],
+    emailRules: [
+      v => !!v || "メールアドレスの入力が必須です",
+      v => /.+@.+/.test(v) || "メールアドレスの形式が正しくありません"
+    ],
+    passwordShow: false,
+    rules: {
+      required: value => !!value || "入力が必須です。",
+      min: v => v.length >= 8 || "最低８文字必要です",
+      emailMatch: () => "The email and password you entered don't match"
     }
+  }),
+  methods: {
+    async submit() {
+      await this.$auth
+        .loginWith("local", {
+          data: this.form
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      this.$router.push("/")
+    }
+  }
+}
 </script>
 
-<style>
-</style>
+<style></style>

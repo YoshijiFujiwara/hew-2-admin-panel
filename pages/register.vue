@@ -29,51 +29,45 @@
 </template>
 
 <script>
-    export default {
-        layout: 'guest',
-        data: () => ({
-            valid: false,
-            form: {
-                name: '',
-                password: '',
-                email: '',
-            },
-            nameRules: [
-                v => !!v || '名前の入力が必須です',
-            ],
-            passwordRules: [
-                v => !!v || 'パスワードの入力が必須です',
-            ],
-            emailRules: [
-                v => !!v || 'メールアドレスの入力が必須です',
-                v => /.+@.+/.test(v) || 'メールアドレスの形式が正しくありません'
-            ],
-            passwordShow: false,
-            rules: {
-                required: value => !!value || '入力が必須です。',
-                min: v => v.length >= 8 || '最低８文字必要です',
-                emailMatch: () => ('The email and password you entered don\'t match')
-            }
-        }),
-        methods: {
-            async submit() {
-                 await this.$axios.$post('admin/auth/register', this.form)
-                     .catch(err => {
-                         console.log(err.response);
-                         return err.response;
-                     });
-                 await this.$auth.loginWith("local", {
-                     data: {
-                         email: this.form.email,
-                         password: this.form.password,
-                     }
-                });
-                // redirect
-                this.$router.push('/')
-            },
-        }, 
+export default {
+  layout: "guest",
+  data: () => ({
+    valid: false,
+    form: {
+      name: "",
+      password: "",
+      email: ""
+    },
+    nameRules: [v => !!v || "名前の入力が必須です"],
+    passwordRules: [v => !!v || "パスワードの入力が必須です"],
+    emailRules: [
+      v => !!v || "メールアドレスの入力が必須です",
+      v => /.+@.+/.test(v) || "メールアドレスの形式が正しくありません"
+    ],
+    passwordShow: false,
+    rules: {
+      required: value => !!value || "入力が必須です。",
+      min: v => v.length >= 8 || "最低８文字必要です",
+      emailMatch: () => "The email and password you entered don't match"
     }
+  }),
+  methods: {
+    async submit() {
+      await this.$axios.$post("admin/auth/register", this.form).catch(err => {
+        console.log(err.response)
+        return err.response
+      })
+      await this.$auth.loginWith("local", {
+        data: {
+          email: this.form.email,
+          password: this.form.password
+        }
+      })
+      // redirect
+      this.$router.push("/")
+    }
+  }
+}
 </script>
 
-<style>
-</style>
+<style></style>

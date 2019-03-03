@@ -55,92 +55,94 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        session: [],
-        sessionUsers: [],
-        sessionUserSearch: '',
+export default {
+  data() {
+    return {
+      session: [],
+      sessionUsers: [],
+      sessionUserSearch: "",
 
-        deleteTargetId: null,
-        dialog: false,
+      deleteTargetId: null,
+      dialog: false,
 
-        headers: [
-          {text: 'id', value: 'id'},
-          {text: 'ユニークID', value: 'unique_id'},
-          {text: 'ユーザー名', value: 'username'},
-          {text: 'メールアドレス', value: 'email'},
-          {text: '参加ステータス', value: 'join_status'},
-          {text: '支払い済みか', value: 'paid'},
-          {text: '属性名', value: 'attribute_name'},
-          {text: '加減算', value: 'plus_minus'},
-          {text: '操作', value: ''},
-        ],
+      headers: [
+        { text: "id", value: "id" },
+        { text: "ユニークID", value: "unique_id" },
+        { text: "ユーザー名", value: "username" },
+        { text: "メールアドレス", value: "email" },
+        { text: "参加ステータス", value: "join_status" },
+        { text: "支払い済みか", value: "paid" },
+        { text: "属性名", value: "attribute_name" },
+        { text: "加減算", value: "plus_minus" },
+        { text: "操作", value: "" }
+      ]
+    }
+  },
+  async asyncData({ $axios, route }) {
+    let { data } = await $axios.$get(`/admin/sessions/${route.params.id}`)
+    console.log(data)
+    return {
+      session: data,
+      sessionUsers: data.users
+    }
+  },
+  created() {
+    console.log(this.sessionUsers)
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("session_update", response => {
+      if (response.message.manager_id == this.$route.params.id) {
+        this.updateSessionInfo()
       }
-    },
-    async asyncData({$axios, route}) {
-      let {data} = await $axios.$get(`/admin/sessions/${route.params.id}`);
-      console.log(data);
-      return {
-        session: data,
-        sessionUsers: data.users
+    })
+    window.Pusher.bind("session_delete", response => {
+      if (response.message.manager_id == this.$route.params.id) {
+        this.$router.push("/sessions")
       }
+    })
+
+    // userネームの更新があるかもしれません
+    window.Pusher.bind("user_update", response => {
+      if (response.message.user_id == this.session.manager.id) {
+        this.updateSessionInfo()
+      }
+
+      // sessionUsersの中に変更のあるuserがいた場合も
+      for (let key in this.sessionUsers) {
+        if (response.message.user_id == this.sessionUsers[key].id) {
+          this.updateSessionInfo()
+          break
+        }
+      }
+    })
+  },
+  methods: {
+    async updateSessionInfo() {
+      await this.$axios
+        .$get(`/admin/sessions/${this.$route.params.id}`)
+        .then(res => {
+          console.log(res)
+          this.session = res.data
+          this.sessionUsers = res.data.users
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    methods: {
-      async updateSessionInfo() {
-        await this.$axios.$get(`/admin/sessions/${this.$route.params.id}`)
-          .then(res => {
-            console.log(res)
-            this.session = res.data;
-            this.sessionUsers = res.data.users;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      async deleteSessionUser(id) {
-        await this.$axios.$delete(`/admin/sessions/${this.$route.params.id}/users/${id}`)
-          .then(res => {
-            for (let key in this.sessionUsers) {
-              if (this.sessionUsers[key].id == id) {
-                this.sessionUsers.splice(key, 1);
-              }
+    async deleteSessionUser(id) {
+      await this.$axios
+        .$delete(`/admin/sessions/${this.$route.params.id}/users/${id}`)
+        .then(res => {
+          for (let key in this.sessionUsers) {
+            if (this.sessionUsers[key].id == id) {
+              this.sessionUsers.splice(key, 1)
             }
-            this.dialog = false;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    },
-    created() {
-      console.log(this.sessionUsers);
-      window.Pusher.subscribe('admin_channel');
-      window.Pusher.bind('session_update', response => {
-        if (response.message.manager_id == this.$route.params.id) {
-          this.updateSessionInfo();
-        }
-      })
-      window.Pusher.bind('session_delete', response => {
-        if (response.message.manager_id == this.$route.params.id) {
-          this.$router.push('/sessions');
-        }
-      })
-
-      // userネームの更新があるかもしれません
-      window.Pusher.bind('user_update', response => {
-        if (response.message.user_id == this.session.manager.id) {
-          this.updateSessionInfo();
-        }
-
-        // sessionUsersの中に変更のあるuserがいた場合も
-        for (let key in this.sessionUsers) {
-          if (response.message.user_id == this.sessionUsers[key].id) {
-            this.updateSessionInfo();
-            break;
           }
-        }
-      })
+          this.dialog = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
+}
 </script>

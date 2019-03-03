@@ -40,87 +40,89 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        group: [],
-        groupUsers: [],
-        groupUserSearch: '',
-        headers: [
-          {text: 'id', value: 'id'},
-          {text: 'ユニークID', value: 'unique_id'},
-          {text: '名前', value: 'name'},
-          {text: 'ユーザー名', value: 'username'},
-          {text: 'メールアドレス', value: 'email'},
-          {text: '操作', value: ''},
-        ],
+export default {
+  data() {
+    return {
+      group: [],
+      groupUsers: [],
+      groupUserSearch: "",
+      headers: [
+        { text: "id", value: "id" },
+        { text: "ユニークID", value: "unique_id" },
+        { text: "名前", value: "name" },
+        { text: "ユーザー名", value: "username" },
+        { text: "メールアドレス", value: "email" },
+        { text: "操作", value: "" }
+      ],
 
-        deleteTargetId: null,
-        dialog: false,
+      deleteTargetId: null,
+      dialog: false
+    }
+  },
+  async asyncData({ $axios, route }) {
+    let { data } = await $axios.$get(`/admin/groups/${route.params.id}`)
+    console.log(data)
+    return {
+      group: data,
+      groupUsers: data.users
+    }
+  },
+  created() {
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("group_update", response => {
+      if (response.message.manager_id == this.$route.params.id) {
+        this.updateGroupInfo()
       }
-    },
-    async asyncData({$axios, route}) {
-      let {data} = await $axios.$get(`/admin/groups/${route.params.id}`);
-      console.log(data);
-      return {
-        group: data,
-        groupUsers: data.users
+    })
+    window.Pusher.bind("group_delete", response => {
+      if (response.message.manager_id == this.$route.params.id) {
+        this.$router.push("/groups")
       }
+    })
+
+    // userネームの更新があるかもしれません
+    window.Pusher.bind("user_update", response => {
+      if (response.message.user_id == this.group.manager.id) {
+        this.updateGroupInfo()
+      }
+
+      // sessionUsersの中に変更のあるuserがいた場合も
+      for (let key in this.groupUsers) {
+        if (response.message.user_id == this.groupUsers[key].id) {
+          this.updateGroupInfo()
+          break
+        }
+      }
+    })
+  },
+  methods: {
+    async updateGroupInfo() {
+      await this.$axios
+        .$get(`/admin/groups/${this.$route.params.id}`)
+        .then(res => {
+          console.log(res)
+          this.group = res.data
+          this.groupUsers = res.data.users
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    methods: {
-      async updateGroupInfo() {
-        await this.$axios.$get(`/admin/groups/${this.$route.params.id}`)
-          .then(res => {
-            console.log(res)
-            this.group = res.data;
-            this.groupUsers = res.data.users;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      async deleteGroupUser(id) {
-        await this.$axios.$delete(`/admin/groups/${this.$route.params.id}/users/${id}`)
-          .then(res => {
-            for (let key in this.groupUsers) {
-              if (this.groupUsers[key].id == id) {
-                this.groupUsers.splice(key, 1);
-              }
+    async deleteGroupUser(id) {
+      await this.$axios
+        .$delete(`/admin/groups/${this.$route.params.id}/users/${id}`)
+        .then(res => {
+          for (let key in this.groupUsers) {
+            if (this.groupUsers[key].id == id) {
+              this.groupUsers.splice(key, 1)
             }
-            this.dialog = false;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    },
-    created() {
-      window.Pusher.subscribe('admin_channel');
-      window.Pusher.bind('group_update', response => {
-        if (response.message.manager_id == this.$route.params.id) {
-          this.updateGroupInfo();
-        }
-      })
-      window.Pusher.bind('group_delete', response => {
-        if (response.message.manager_id == this.$route.params.id) {
-          this.$router.push('/groups');
-        }
-      })
-
-      // userネームの更新があるかもしれません
-      window.Pusher.bind('user_update', response => {
-        if (response.message.user_id == this.group.manager.id) {
-          this.updateGroupInfo();
-        }
-
-        // sessionUsersの中に変更のあるuserがいた場合も
-        for (let key in this.groupUsers) {
-          if (response.message.user_id == this.groupUsers[key].id) {
-            this.updateGroupInfo();
-            break;
           }
-        }
-      })
+          this.dialog = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
+}
 </script>

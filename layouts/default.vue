@@ -38,99 +38,97 @@
 </template>
 
 <script>
-  import goTo from 'vuetify/lib/components/Vuetify/goTo'
+import goTo from "vuetify/lib/components/Vuetify/goTo"
 
-  export default {
-    middleware: ['auth'],
-    data() {
-      return {
-        clipped: false,
-        drawer: false,
-        fixed: false,
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'ホイッスル管理画面',
-        items: [
-          {
-            icon: 'dashboard',
-            title: 'ダッシュボード',
-            to: '/'
-          },
-          {
-            icon: 'people',
-            title: 'ユーザー一覧',
-            to: '/users'
-          },
-          {
-            icon: 'local_drink',
-            title: 'セッション一覧',
-            to: '/sessions'
-          },
-          {
-            icon: 'group_work',
-            title: 'グループ一覧',
-            to: '/groups'
-          },
-          {
-            icon: 'edit_attributes',
-            title: '属性一覧',
-            to: '/attributes'
-          },
-          {
-            icon: 'settings_applications',
-            title: 'デフォルト設定一覧',
-            to: '/default_settings'
-          },
-          {
-            icon: 'notifications_active',
-            title: 'プッシュ通知ためす',
-            to: '/notifications'
-          },
-          {
-            icon: 'center_focus_strong',
-            title: 'フォーカスモード',
-            to: '/focus_mode'
-          },
-        ],
+export default {
+  middleware: ["auth"],
+  data() {
+    return {
+      clipped: false,
+      drawer: false,
+      fixed: false,
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: "ホイッスル管理画面",
+      items: [
+        {
+          icon: "dashboard",
+          title: "ダッシュボード",
+          to: "/"
+        },
+        {
+          icon: "people",
+          title: "ユーザー一覧",
+          to: "/users"
+        },
+        {
+          icon: "local_drink",
+          title: "セッション一覧",
+          to: "/sessions"
+        },
+        {
+          icon: "group_work",
+          title: "グループ一覧",
+          to: "/groups"
+        },
+        {
+          icon: "edit_attributes",
+          title: "属性一覧",
+          to: "/attributes"
+        },
+        {
+          icon: "settings_applications",
+          title: "デフォルト設定一覧",
+          to: "/default_settings"
+        },
+        {
+          icon: "notifications_active",
+          title: "プッシュ通知ためす",
+          to: "/notifications"
+        },
+        {
+          icon: "center_focus_strong",
+          title: "フォーカスモード",
+          to: "/focus_mode"
+        }
+      ],
 
-        scrollY: 0,
-
-      }
-    },
-    methods: {
-      async logout() {
-        await this.$auth.logout(); // nuxt.config authに書いているから、一行で済む
-        await this.$router.push('/login');
-      },
-      scrollTop() {
-        goTo(0);
-      },
-      handleScroll() {
-        this.scrollY = window.scrollY;
-      }
-    },
-    watch: {
-      $route() {
-        console.log('route changed', this.$route.name);
-      }
-    },
-    created () {
-      window.addEventListener('scroll', this.handleScroll);
-    },
-    destroyed () {
-      window.removeEventListener('scroll', this.handleScroll);
+      scrollY: 0
     }
-
+  },
+  watch: {
+    $route() {
+      console.log("route changed", this.$route.name)
+    }
+  },
+  created() {
+    window.addEventListener("scroll", this.handleScroll)
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll)
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout() // nuxt.config authに書いているから、一行で済む
+      await this.$router.push("/login")
+    },
+    scrollTop() {
+      goTo(0)
+    },
+    handleScroll() {
+      this.scrollY = window.scrollY
+    }
   }
+}
 </script>
 
 <style scoped lang="stylus">
-  #scroll_top_btn
-    position fixed
-    bottom 40px
-    right 10px
+#scroll_top_btn
+  position fixed
+  bottom 40px
+  right 10px
 
-  #admin_content_wrapper
-    background-color #FFEFFE
+#admin_content_wrapper
+  background-color #FFEFFE
 </style>

@@ -13,19 +13,19 @@
 </template>
 
 <script>
-  export default {
-    middleware: ['guest'],
-    data() {
-      return {
-        clipped: false,
-        title: 'ホイッスル管理画面',
-        fixed: false,
-      }
-    },
+export default {
+  middleware: ["guest"],
+  data() {
+    return {
+      clipped: false,
+      title: "ホイッスル管理画面",
+      fixed: false
+    }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
-  #guest_content_wrapper
-    background-color #FFEFFE
+#guest_content_wrapper
+  background-color #FFEFFE
 </style>

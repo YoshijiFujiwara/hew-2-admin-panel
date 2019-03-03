@@ -39,89 +39,89 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        headers: [
-          {text: 'id', value: 'id'},
-          {text: '幹事ユーザー名', value: 'manager'},
-          {text: 'グループ名', value: 'name'},
-          {text: '人数', value: 'users'},
-          {text: '作成日時', value: 'created_at'},
-          {text: '更新日時', value: 'updated_at'},
-          {text: '操作', value: ''},
-        ],
-        groups: [],
-        search: '',
-        dialog: false,
-        snackbar: false,
-        y: 'top',
-        x: null,
-        mode: '',
-        timeout: 6000,
-        text: 'このグループを使用しているデフォルト設定があるため削除できません'
-      }
-    },
-    async asyncData({$axios}) {
-      let {data} = await $axios.$get('/admin/groups');
-      return {
-        groups: data,
-      }
-    },
-    methods: {
-      async updateGroups() {
-        await this.$axios.$get('/admin/groups')
-          .then(res => {
-            console.log(res)
-            this.groups = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      async deleteGroup(id) {
-        await this.$axios.$delete(`/admin/groups/${id}`)
-          .then(res => {
-            for (let key in this.groups) {
-              if (this.groups[key].id == id) {
-                this.groups.splice(key, 1);
-              }
-            }
-            this.dialog = false;
-          })
-          .catch(err => {
-            if (err.response.status == 409) {
-              this.text = 'このグループを使用しているデフォルト設定があるため削除できません';
-            } else {
-              this.text = '原因不明のエラーです';
-            }
-            this.snackbar = true;
-            this.dialog = false;
-            console.log(err);
-          });
+export default {
+  data() {
+    return {
+      headers: [
+        { text: "id", value: "id" },
+        { text: "幹事ユーザー名", value: "manager" },
+        { text: "グループ名", value: "name" },
+        { text: "人数", value: "users" },
+        { text: "作成日時", value: "created_at" },
+        { text: "更新日時", value: "updated_at" },
+        { text: "操作", value: "" }
+      ],
+      groups: [],
+      search: "",
+      dialog: false,
+      snackbar: false,
+      y: "top",
+      x: null,
+      mode: "",
+      timeout: 6000,
+      text: "このグループを使用しているデフォルト設定があるため削除できません"
+    }
+  },
+  async asyncData({ $axios }) {
+    let { data } = await $axios.$get("/admin/groups")
+    return {
+      groups: data
+    }
+  },
+  created() {
+    window.Pusher.subscribe("admin_channel")
+    window.Pusher.bind("group_create", response => {
+      this.updateGroups()
+    })
+    window.Pusher.bind("group_update", response => {
+      this.updateGroups()
+    })
+    window.Pusher.bind("group_delete", response => {
+      this.updateGroups()
+    })
 
-      },
+    // userネームの更新があるかもしれません
+    window.Pusher.bind("user_update", response => {
+      this.updateGroups()
+    })
+  },
+  methods: {
+    async updateGroups() {
+      await this.$axios
+        .$get("/admin/groups")
+        .then(res => {
+          console.log(res)
+          this.groups = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    created() {
-      window.Pusher.subscribe('admin_channel');
-      window.Pusher.bind('group_create', response => {
-        this.updateGroups();
-      })
-      window.Pusher.bind('group_update', response => {
-        this.updateGroups();
-      })
-      window.Pusher.bind('group_delete', response => {
-        this.updateGroups();
-      })
-
-      // userネームの更新があるかもしれません
-      window.Pusher.bind('user_update', response => {
-        this.updateGroups();
-      })
+    async deleteGroup(id) {
+      await this.$axios
+        .$delete(`/admin/groups/${id}`)
+        .then(res => {
+          for (let key in this.groups) {
+            if (this.groups[key].id == id) {
+              this.groups.splice(key, 1)
+            }
+          }
+          this.dialog = false
+        })
+        .catch(err => {
+          if (err.response.status == 409) {
+            this.text =
+              "このグループを使用しているデフォルト設定があるため削除できません"
+          } else {
+            this.text = "原因不明のエラーです"
+          }
+          this.snackbar = true
+          this.dialog = false
+          console.log(err)
+        })
     }
   }
+}
 </script>
 
-<style>
-
-</style>
+<style></style>
