@@ -1,29 +1,15 @@
-<template>
-    <v-app>
-        <v-toolbar
-            :clipped-left="clipped"
-            fixed
-            app
-        >
-            <v-toolbar-title v-text="title"/>
-            <v-spacer></v-spacer>
-            <template v-if="authenticated">
-                <p>{{user.email}}</p>
-            </template>
-        </v-toolbar>
-        <v-content>
-            <v-container>
-                <nuxt />
-            </v-container>
-        </v-content>
-
-        <v-footer
-            :fixed="fixed"
-            app
-        >
-            <span>&copy; 2017</span>
-        </v-footer>
-    </v-app>
+<template lang="pug">
+  v-app
+    v-toolbar(:clipped-left="clipped" fixed app)
+      v-toolbar-title(v-text="title")
+      v-spacer
+      template(v-if="authenticated"): p {{ user.email }}
+    v-content
+      v-container
+        nuxt
+    v-footer(:fixed="fixed" app)
+      span &copy; 2019 HEW ホイッスル
+     
 </template>
 
 <script>
