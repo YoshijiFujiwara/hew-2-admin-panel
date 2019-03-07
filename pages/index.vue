@@ -13,15 +13,25 @@
         v-card-title
           h3 時間帯別
         session-time-chart(:label-data="sessionTimeData.labels" :dataset-data="sessionTimeData.datasets")
+      v-card(xs12)
+        v-card-title
+          h3 属性別カウント
+        attribute-count-chart(:label-data="attributeCountData.labels" :dataset-data="attributeCountData.datasets")
+      v-card(xs12)
+        v-card-title
+          h3 属性別プラマイ平均
+        attribute-average-chart(:label-data="attributePlusMinusAverageData.labels" :dataset-data="attributePlusMinusAverageData.datasets")
 </template>
 
 <script>
 import SessionUserNumberChart from "../components/SessionUserNumberChart";
 import SessionNumberChart from "../components/SessionNumberChart";
 import SessionTimeChart from "../components/SessionTimeChart";
+import AttributeCountChart from "../components/AttributeChart";
+import AttributeAverageChart from "../components/AttributeAverageChart";
 
 export default {
-  components: {SessionTimeChart, SessionUserNumberChart, SessionNumberChart },
+  components: {SessionTimeChart, SessionUserNumberChart, SessionNumberChart, AttributeCountChart, AttributeAverageChart },
   data:() => ({
     sessions: [],
     sessionsUserNumberData: {
@@ -36,6 +46,14 @@ export default {
       labels: [],
       datasets: []
     },
+    attributeCountData: {
+      labels: [],
+      datasets: []
+    },
+    attributePlusMinusAverageData: {
+      labels: [],
+      datasets: []
+    }
   }),
   async asyncData({ $axios }) {
     const { data } = await $axios.$get("/admin/sessions")
@@ -133,6 +151,58 @@ export default {
         label: 'イベント数',
         backgroundColor: '#FF3535',
         data: [time10, time11, time12, time13, time14, time15, time16, time17, time18, time19, time20, time21, time22, time23, time0, time1, time2]
+      }
+    ];
+
+
+    // 属性データの集計
+    // 属性データの集計
+    let attributeNames = [];
+    let attributeCounts = [];
+    let attributeSums = [];
+    this.sessions.forEach(session => {
+      session.users.forEach(user => {
+        let key = user.attribute_name;
+        attributeCounts[key] = (attributeCounts[key])? attributeCounts[key] + 1 : 1 ;
+        attributeSums[key]   = (attributeSums[key] && user.plus_minus)? attributeSums[key] + user.plus_minus : 1 ;
+      })
+    })
+    console.log(attributeCounts);
+    console.log(attributeSums);
+    // 属性別平均支払い額
+    let attributeAverages = [];
+    let attributeCountData = [];
+    for (let attributeName in attributeCounts) {
+      attributeNames.push(attributeName);
+      attributeCountData.push(attributeCounts[attributeName]);
+      if (attributeSums[attributeName] && attributeCounts[attributeName] > 0) {
+        attributeAverages[attributeName] = attributeSums[attributeName] / attributeCounts[attributeName];
+      } else {
+        attributeAverages[attributeName] = "";
+      }
+    }
+    let attributeAverageDatas = [];
+    for (let attributeName in attributeAverages) {
+      attributeAverageDatas.push(attributeAverages[attributeName]);
+    }
+
+    console.log(attributeAverages);
+    console.log(attributeCounts);
+    this.attributeCountData.labels = attributeNames;
+    this.attributeCountData.datasets = [
+      {
+        label: '属性',
+        backgroundColor: '#FF3535',
+        data: attributeCountData
+      }
+    ];
+
+    this.attributePlusMinusAverageData.labels = attributeNames;
+    this.attributePlusMinusAverageData.datasets = [
+      {
+        label: '属性',
+        backgroundColor: '#FF3535',
+        data: attributeAverageDatas
       }
     ];
   }
