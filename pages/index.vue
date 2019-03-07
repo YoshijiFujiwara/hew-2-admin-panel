@@ -9,14 +9,19 @@
         v-card-title
           h3 イベント
         session-number-chart(:label-data="sessionNumberData.labels" :dataset-data="sessionNumberData.datasets")
+      v-card(xs12)
+        v-card-title
+          h3 時間帯別
+        session-time-chart(:label-data="sessionTimeData.labels" :dataset-data="sessionTimeData.datasets")
 </template>
 
 <script>
 import SessionUserNumberChart from "../components/SessionUserNumberChart";
 import SessionNumberChart from "../components/SessionNumberChart";
+import SessionTimeChart from "../components/SessionTimeChart";
 
 export default {
-  components: { SessionUserNumberChart, SessionNumberChart },
+  components: {SessionTimeChart, SessionUserNumberChart, SessionNumberChart },
   data:() => ({
     sessions: [],
     sessionsUserNumberData: {
@@ -26,7 +31,11 @@ export default {
     sessionNumberData: {
       labels: [],
       datasets: []
-    }
+    },
+    sessionTimeData: {
+      labels: [],
+      datasets: []
+    },
   }),
   async asyncData({ $axios }) {
     const { data } = await $axios.$get("/admin/sessions")
@@ -68,7 +77,7 @@ export default {
       const result = new String(session.start_time).split(' ');
       return result[0]
     })
-    console.log(sessionStartDatas)
+    // console.log(sessionStartDatas)
     const july2018 = sessionStartDatas.filter(data => { return data.split("-")[0] == 2018 && data.split("-")[1] == "7" }).length;
     const aug2018 = sessionStartDatas.filter(data => { return data.split("-")[0] == 2018 && data.split("-")[1] == "8" }).length;
     const sept2018 = sessionStartDatas.filter(data => { return data.split("-")[0] == 2018 && data.split("-")[1] == "9" }).length;
@@ -87,6 +96,43 @@ export default {
         label: 'イベント数',
         backgroundColor: '#FF3535',
         data: [july2018, aug2018, sept2018, oct2018, nov2018, dec2018, jan2019, feb2019, mar2019]
+      }
+    ];
+
+    // イベントの時間帯別の集計
+    const sessionStartTimeDatas = this.sessions.map(session => {
+      const timeResult = new String(session.start_time).split(' ');
+      if (timeResult != "null") {
+        const hourResult = timeResult[1].split(':');
+        return hourResult[0];
+      }
+    })
+    const time10 = sessionStartTimeDatas.filter(data => data == 10).length;
+    const time11 = sessionStartTimeDatas.filter(data => data == 11).length;
+    const time12 = sessionStartTimeDatas.filter(data => data == 12).length;
+    const time13 = sessionStartTimeDatas.filter(data => data == 13).length;
+    const time14 = sessionStartTimeDatas.filter(data => data == 14).length;
+    const time15 = sessionStartTimeDatas.filter(data => data == 15).length;
+    const time16 = sessionStartTimeDatas.filter(data => data == 16).length;
+    const time17 = sessionStartTimeDatas.filter(data => data == 17).length;
+    const time18 = sessionStartTimeDatas.filter(data => data == 18).length;
+    const time19 = sessionStartTimeDatas.filter(data => data == 19).length;
+    const time20 = sessionStartTimeDatas.filter(data => data == 20).length;
+    const time21 = sessionStartTimeDatas.filter(data => data == 21).length;
+    const time22 = sessionStartTimeDatas.filter(data => data == 22).length;
+    const time23 = sessionStartTimeDatas.filter(data => data == 23).length;
+    const time0 = sessionStartTimeDatas.filter(data => data == 0).length;
+    const time1 = sessionStartTimeDatas.filter(data => data == 1).length;
+    const time2 = sessionStartTimeDatas.filter(data => data == 2).length;
+
+    this.sessionTimeData.labels = [
+      '10時','11時','12時','13時','14時','15時','16時','17時','18時','19時','20時','21時','22時','23時','24時','1時','2時',
+    ];
+    this.sessionTimeData.datasets = [
+      {
+        label: 'イベント数',
+        backgroundColor: '#FF3535',
+        data: [time10, time11, time12, time13, time14, time15, time16, time17, time18, time19, time20, time21, time22, time23, time0, time1, time2]
       }
     ];
   }

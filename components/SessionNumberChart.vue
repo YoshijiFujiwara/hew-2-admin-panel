@@ -1,12 +1,11 @@
 <script>
-  import { Line } from 'vue-chartjs'
+  import {Line} from 'vue-chartjs'
 
   export default {
     extends: Line,
     props: ['labelData', 'datasetData'],
-    async mounted() {
-      console.log(this.labelData);
-      await this.renderChart(
+    mounted() {
+      this.renderChart(
         {
           labels: this.labelData,
           datasets: this.datasetData
