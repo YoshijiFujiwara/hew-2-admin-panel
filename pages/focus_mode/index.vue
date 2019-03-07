@@ -10,11 +10,11 @@
               v-btn.frame_delete_icon(fab dark color="error" small): v-icon(@click.prevent="deleteTargetFrame = n, dialog = true") delete
           v-select(:items="users" item-text="username" item-value="id" box label="ユーザー" v-model="frames[n].user_id")
           div.send_icon(v-for="o in frameKeys" :ref="'sendFrom' + n + 'To' + o")
-            v-icon(large color="primary") send
+            v-icon.xl_icon(color="primary") send
           div.okey_icon(v-for="o in frameKeys" :ref="'okeyFrom' + n + 'To' + o")
-            v-icon(large color="success") radio_button_unchecked
+            v-icon.xl_icon(color="success") radio_button_unchecked
           div.no_icon(v-for="o in frameKeys" :ref="'noFrom' + n + 'To' + o")
-            v-icon(large color="error") close
+            v-icon.xl_icon(color="error") close
           div(:ref="'frameDialogInfo' + n")
             v-alert.frame_dialog_info.subheading(:value="true" color="info" icon="check_circle" outline) {{ frames[n].frameInfoDialog }}
           div(:ref="'frameDialogOkey' + n")
@@ -61,7 +61,7 @@ export default {
   },
   created() {
     window.Pusher.subscribe("focus_mode_channel")
-    // セッションの作成時
+    // イベントの作成時
     window.Pusher.bind("focus_session_create", response => {
       console.log("session_create")
       console.log(response)
@@ -75,7 +75,7 @@ export default {
       this.dialogAnimationTrigger(managerId, dialogMessage, "Info")
     })
 
-    // セッションへの招待
+    // イベントへの招待
     window.Pusher.bind("focus_session_invitation", response => {
       console.log(response)
       const contents = response.message
@@ -91,12 +91,12 @@ export default {
         this.invitationAnimation(managerId, userIds[i])
       }
     })
-    // // セッション情報のアップデート
+    // // イベント情報のアップデート
     // window.Pusher.bind('focus_session_update', response => {
     //
     //
     // })
-    // セッションの招待に対する返事
+    // イベントの招待に対する返事
     window.Pusher.bind("focus_session_reply", response => {
       const contents = response.message
       const managerId = contents.manager_id
@@ -202,7 +202,7 @@ export default {
     async animationTest2(frameFrom, frameTo) {
       await TweenMax.fromTo(
         this.$refs[`sendFrom${frameFrom}To${frameTo}`],
-        2,
+        6,
         {
           x: 0,
           y: 0,
@@ -220,7 +220,7 @@ export default {
     async iconAnimation(frameFrom, frameTo, refName) {
       await TweenMax.fromTo(
         this.$refs[`${refName}From${frameFrom}To${frameTo}`],
-        2,
+        6,
         {
           x: 0,
           y: 0,
@@ -231,11 +231,11 @@ export default {
           y: this.frames[frameTo].y - this.frames[frameFrom].y
         }
       )
-      await TweenMax.to(
-        this.$refs[`${refName}From${frameFrom}To${frameTo}`],
-        4,
-        { opacity: 0 }
-      )
+      // await TweenMax.to(
+      //   this.$refs[`${refName}From${frameFrom}To${frameTo}`],
+      //   8,
+      //   { opacity: 0 }
+      // )
     },
     invitationAnimation(managerId, userId) {
       console.log(managerId + "and" + userId)
@@ -370,15 +370,15 @@ export default {
 .send_icon
   position absolute
   left 20px
-  top 250px
+  top 200px
 .okey_icon
   position absolute
   left 60px
-  top 250px
+  top 200px
 .no_icon
   position absolute
   left 100px
-  top 250px
+  top 200px
 .android_mirror_frame
   background-color rgba(156, 162, 255, 0.1)
 .frame_delete_icon
@@ -397,4 +397,6 @@ export default {
   position absolute
   top 150px
   width 100%
+.xl_icon
+  font-size 100px
 </style>

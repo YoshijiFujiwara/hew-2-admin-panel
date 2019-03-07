@@ -2,13 +2,13 @@
   div
     v-flex(xs12 md12)
       v-card(color="white" title="Edit Profile" text="Complete your profile")
-        v-card-title: h1 セッション詳細
+        v-card-title: h1 イベント詳細
         v-container(py-0)
           v-layout(wrap)
             v-flex.pr-3(xs12 md6)
               v-text-field.purple-input(disabled label="リーダー" v-model="session.manager.username")
             v-flex.pr-3(xs12 md6)
-              v-text-field.purple-input(label="セッション名" v-model="session.name")
+              v-text-field.purple-input(label="イベント名" v-model="session.name")
             v-flex.pr-3(xs12 md6)
               v-text-field(label="店ID" class="purple-input" v-model="session.shop_id")
             v-flex.pr-3(xs12 md6)
@@ -22,7 +22,7 @@
     v-flex.mt-5(xs12 md12)
       v-card
         v-card-title
-          h2 このセッションの参加メンバー
+          h2 このイベントの参加メンバー
           v-spacer
           v-text-field(v-model="sessionUserSearch" append-icon="search" label="検索" single-line hide-details)
         v-data-table(:headers="headers" :items="sessionUsers" :search="sessionUserSearch")

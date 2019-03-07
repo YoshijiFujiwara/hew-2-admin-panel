@@ -103,7 +103,7 @@
     v-flex.mt-5(xs12 md12)
       v-card
         v-card-title
-          h2.blue--text セッション一覧
+          h2.blue--text イベント一覧
           v-spacer
           v-text-field(v-model="sessionSearch" append-icon="search" label="検索" single-line hide-details)
         v-data-table(:headers="headers.sessions" :items="sessions" :search="sessionSearch")
@@ -171,7 +171,7 @@
     v-flex.mt-5(xs12 md12)
       v-card
         v-card-title
-          h2.orange--text ゲストとして参加しているセッション一覧
+          h2.orange--text ゲストとして参加しているイベント一覧
           v-spacer
           v-text-field(v-model="participatedSessionSearch" append-icon="search" label="検索" single-line hide-details)
         v-data-table(:headers="headers.sessions" :items="participatedSessions" :search="participatedSessionSearch")
@@ -251,7 +251,7 @@ export default {
         sessions: [
           { text: "id", value: "id" },
           { text: "幹事ユーザー名", value: "manager" },
-          { text: "セッション名", value: "name" },
+          { text: "イベント名", value: "name" },
           { text: "店ID", value: "shop_id" },
           { text: "予算", value: "budget" },
           { text: "実際の金額", value: "actual" },
@@ -318,7 +318,7 @@ export default {
     },
     events() {
       let eventDatas = []
-      // 管理しているセッション情報
+      // 管理しているイベント情報
       for (let key in this.sessions) {
         let allowCount = 0
         let denyCount = 0
@@ -346,14 +346,14 @@ export default {
               ? this.sessions[key].start_time.slice(0, 10)
               : null,
           // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
-          details: `セッションID:&nbsp;${this.sessions[key].id}<br>幹事：${
+          details: `イベントID:&nbsp;${this.sessions[key].id}<br>幹事：${
             this.sessions[key].manager.username
           }<br>参加人数:${allowCount}人<br>招待中: ${waitCount}人<br>参加拒否: ${denyCount}人`,
           open: false
         })
       }
 
-      // 参加しているセッション情報
+      // 参加しているイベント情報
       for (let key in this.participatedSessions) {
         let allowCount = 0
         let denyCount = 0
@@ -381,7 +381,7 @@ export default {
               ? this.participatedSessions[key].start_time.slice(0, 10)
               : null,
           // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
-          details: `セッションID:&nbsp;${
+          details: `イベントID:&nbsp;${
             this.participatedSessions[key].id
           }<br>幹事：${
             this.participatedSessions[key].manager.username
@@ -494,7 +494,7 @@ export default {
       if (response.message.manager_id == this.$route.params.id) {
         this.updateSessionInfo()
       }
-      // ゲスト参加しているセッションの中に、更新がある場合
+      // ゲスト参加しているイベントの中に、更新がある場合
       for (let key in this.participatedSessions) {
         if (response.message.session_id == this.participatedSessions[key].id) {
           this.updateParticipatedSessionInfo()
@@ -506,7 +506,7 @@ export default {
       if (response.message.manager_id == this.$route.params.id) {
         this.updateSessionInfo()
       }
-      // ゲスト参加しているセッションの中に、更新がある場合
+      // ゲスト参加しているイベントの中に、更新がある場合
       for (let key in this.participatedSessions) {
         if (response.message.session_id == this.participatedSessions[key].id) {
           this.updateParticipatedSessionInfo()

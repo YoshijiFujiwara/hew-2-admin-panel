@@ -64,7 +64,7 @@ export default {
         },
         {
           icon: "local_drink",
-          title: "セッション一覧",
+          title: "イベント一覧",
           to: "/sessions"
         },
         {
@@ -91,6 +91,11 @@ export default {
           icon: "center_focus_strong",
           title: "フォーカスモード",
           to: "/focus_mode"
+        },
+        {
+          icon: "phone_android",
+          title: "データストリーム",
+          to: "/data_streams"
         }
       ],
 

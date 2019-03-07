@@ -2,7 +2,7 @@
   div
     v-card
       v-card-title
-        h2 セッション一覧
+        h2 イベント一覧
         v-spacer
         v-text-field(v-model="search" append-icon="search" label="検索" single-line hide-details)
       v-data-table(:headers="headers" :items="sessions" :search="search")
@@ -40,7 +40,7 @@ export default {
       headers: [
         { text: "id", value: "id" },
         { text: "幹事ユーザー名", value: "manager" },
-        { text: "セッション名", value: "name" },
+        { text: "イベント名", value: "name" },
         { text: "店ID", value: "shop_id" },
         { text: "予算", value: "budget" },
         { text: "実際の金額", value: "actual" },
@@ -94,7 +94,7 @@ export default {
               ? this.sessions[key].start_time.slice(0, 10)
               : null,
           // time: (this.sessions[key].start_time != null)? this.sessions[key].start_time.slice(11,16): null,
-          details: `セッションID:&nbsp;${this.sessions[key].id}<br>幹事：${
+          details: `イベントID:&nbsp;${this.sessions[key].id}<br>幹事：${
             this.sessions[key].manager.username
           }<br>参加人数:${allowCount}人<br>招待中: ${waitCount}人<br>参加拒否: ${denyCount}人`,
           open: false

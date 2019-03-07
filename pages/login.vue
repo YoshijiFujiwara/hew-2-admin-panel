@@ -12,7 +12,7 @@
                        :type="passwordShow ? 'text' : 'password'"
                        name="input-10-1"
                        label="パスワード"
-                       hint="8文字以上必要"
+                       hint="6文字以上必要"
                        counter
                        @click:append="passwordShow = !passwordShow")
         div
@@ -43,7 +43,7 @@ export default {
     passwordShow: false,
     rules: {
       required: value => !!value || "入力が必須です。",
-      min: v => v.length >= 8 || "最低８文字必要です",
+      min: v => v.length >= 6 || "最低6文字必要です",
       emailMatch: () => "The email and password you entered don't match"
     }
   }),

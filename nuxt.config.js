@@ -58,7 +58,7 @@ module.exports = {
     "@/plugins/pusher",
     "./plugins/mixins/user.js",
     "./plugins/mixins/validation.js",
-    "./plugins/axios.js"
+    "./plugins/axios.js",
   ],
 
   /*
@@ -68,8 +68,8 @@ module.exports = {
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: "https://laravelv2-dot-eventer-1543384121468.appspot.com/api"
-    // baseURL: 'http://localhost/api',
+    // baseURL: "https://laravelv2-dot-eventer-1543384121468.appspot.com/api"
+    baseURL: 'http://localhost/api',
   },
 
   // 認証
@@ -118,15 +118,15 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) {
-      // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          loader: "eslint-loader",
-          exclude: /(node_modules)/
-        })
-      }
+      // // Run ESLint on save
+      // if (ctx.isDev && ctx.isClient) {
+      //   config.module.rules.push({
+      //     enforce: "pre",
+      //     test: /\.(js|vue)$/,
+      //     loader: "eslint-loader",
+      //     exclude: /(node_modules)/
+      //   })
+      // }
     }
   }
 }
