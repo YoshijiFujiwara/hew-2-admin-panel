@@ -236,7 +236,9 @@ export default {
 
     // ジャンル別店の分布
     const genreShopData = this.shops.map(shop => {
+      if (shop.genre_name) {
         return shop.genre_name;
+      }
     })
     let shopGenreCounts = [];
     genreShopData.forEach(genreName => {
