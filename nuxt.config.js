@@ -87,7 +87,7 @@ module.exports = {
           },
           user: {
             url: "auth/me",
-            method: "post",
+            method: "get",
             propertyName: "data"
           },
           logout: {

@@ -1,25 +1,39 @@
 <template lang="pug">
-  div
-    v-flex(xs12 md12)
+  v-layout(row wrap)
+    v-flex.px-3(xs12 md6)
       v-card
         v-card-title
-          h3 イベントの参加人数状況
+          h2 イベントの参加人数状況
         session-user-number-chart(:label-data="sessionsUserNumberData.labels" :dataset-data="sessionsUserNumberData.datasets")
+    v-flex.px-3(xs12 md6)
       v-card(xs12)
         v-card-title
-          h3 イベント
+          h2 イベント数の推移
         session-number-chart(:label-data="sessionNumberData.labels" :dataset-data="sessionNumberData.datasets")
+    v-flex.px-3.mt-3(xs12 md6)
       v-card(xs12)
         v-card-title
-          h3 時間帯別
+          h2 ジャンル別店舗数
+        genre-shop-chart(:label-data="genreShopData.labels" :dataset-data="genreShopData.datasets")
+    v-flex.px-3.mt-3(xs12 md6)
+      v-card(xs12)
+        v-card-title
+          h2 店のジャンル別イベント数
+        genre-shop-chart(:label-data="genreSessionData.labels" :dataset-data="genreSessionData.datasets")
+    v-flex.px-3.mt-3(xs12 md6)
+      v-card(xs12)
+        v-card-title
+          h2 時間帯別
         session-time-chart(:label-data="sessionTimeData.labels" :dataset-data="sessionTimeData.datasets")
+    v-flex.px-3.mt-3(xs12 md6)
       v-card(xs12)
         v-card-title
-          h3 属性別カウント
+          h2 属性別カウント
         attribute-count-chart(:label-data="attributeCountData.labels" :dataset-data="attributeCountData.datasets")
+    v-flex.px-3.mt-3(xs12 md6)
       v-card(xs12)
         v-card-title
-          h3 属性別プラマイ平均
+          h2 属性別プラマイ平均
         attribute-average-chart(:label-data="attributePlusMinusAverageData.labels" :dataset-data="attributePlusMinusAverageData.datasets")
 </template>
 
@@ -29,11 +43,13 @@ import SessionNumberChart from "../components/SessionNumberChart";
 import SessionTimeChart from "../components/SessionTimeChart";
 import AttributeCountChart from "../components/AttributeChart";
 import AttributeAverageChart from "../components/AttributeAverageChart";
+import GenreShopChart from "../components/GenreShopChart";
 
 export default {
-  components: {SessionTimeChart, SessionUserNumberChart, SessionNumberChart, AttributeCountChart, AttributeAverageChart },
+  components: {SessionTimeChart, SessionUserNumberChart, SessionNumberChart, AttributeCountChart, AttributeAverageChart, GenreShopChart },
   data:() => ({
     sessions: [],
+    shops: [],
     sessionsUserNumberData: {
       labels: [],
       datasets: []
@@ -53,12 +69,23 @@ export default {
     attributePlusMinusAverageData: {
       labels: [],
       datasets: []
+    },
+
+    genreShopData: {
+      labels: [],
+      datasets: []
+    },
+    genreSessionData: {
+      labels: [],
+      datasets: []
     }
   }),
   async asyncData({ $axios }) {
-    const { data } = await $axios.$get("/admin/sessions")
+    const sessions = await $axios.$get("/admin/sessions")
+    let shops = await $axios.$get("/admin/shops")
     return {
-      sessions: data
+      sessions: sessions.data,
+      shops: shops.data
     }
   },
   created() {
@@ -154,8 +181,6 @@ export default {
       }
     ];
 
-
-    // 属性データの集計
     // 属性データの集計
     let attributeNames = [];
     let attributeCounts = [];
@@ -203,6 +228,56 @@ export default {
         label: '属性',
         backgroundColor: '#FF3535',
         data: attributeAverageDatas
+      }
+    ];
+
+    // ジャンル別店の分布
+    const genreShopData = this.shops.map(shop => {
+        return shop.genre_name;
+    })
+    let shopGenreCounts = [];
+    genreShopData.forEach(genreName => {
+      shopGenreCounts[genreName] = (shopGenreCounts[genreName])? shopGenreCounts[genreName] + 1 : 1 ;
+    })
+    let shopGenreLabels = [];
+    let shopGenreDatas = [];
+    for (let genreName in shopGenreCounts) {
+      shopGenreLabels.push(genreName);
+      shopGenreDatas.push(shopGenreCounts[genreName]);
+    }
+
+    this.genreShopData.labels = shopGenreLabels;
+    this.genreShopData.datasets = [
+      {
+        label: 'Data One',
+        backgroundColor: ['#FF3535', '#FF35FC', '#7835FF', '#3560FF', '#35F3FF', '#35FF8E', '#69FF35', '#D7FF35', '#FFC235', '#FF3535'],
+        data: shopGenreDatas
+      }
+    ];
+
+    // イベントで使用された回数をジャンル別で表示する
+    const genreSessionData = this.sessions.map(session => {
+      if (session.shop.genre_name) {
+        return session.shop.genre_name;
+      }
+    })
+    let sessionGenreCounts = [];
+    genreSessionData.forEach(genreName => {
+      sessionGenreCounts[genreName] = (sessionGenreCounts[genreName])? sessionGenreCounts[genreName] + 1 : 1 ;
+    })
+    let sessionGenreLabels = [];
+    let sessionGenreDatas = [];
+    for (let genreName in sessionGenreCounts) {
+      sessionGenreLabels.push(genreName);
+      sessionGenreDatas.push(sessionGenreCounts[genreName]);
+    }
+
+    this.genreSessionData.labels = sessionGenreLabels;
+    this.genreSessionData.datasets = [
+      {
+        label: 'Data One',
+        backgroundColor: ['#FF3535', '#FF35FC', '#7835FF', '#3560FF', '#35F3FF', '#35FF8E', '#69FF35', '#D7FF35', '#FFC235', '#FF3535'],
+        data: sessionGenreDatas
       }
     ];
   }

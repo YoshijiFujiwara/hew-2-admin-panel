@@ -58,6 +58,11 @@ export default {
           to: "/"
         },
         {
+          icon: "fastfood",
+          title: "店一覧",
+          to: "/shops"
+        },
+        {
           icon: "people",
           title: "ユーザー一覧",
           to: "/users"
