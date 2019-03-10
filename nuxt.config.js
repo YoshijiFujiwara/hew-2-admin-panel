@@ -59,12 +59,13 @@ module.exports = {
     "./plugins/mixins/user.js",
     "./plugins/mixins/validation.js",
     "./plugins/axios.js",
+    "~/plugins/google-maps",
   ],
 
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/dotenv"],
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options

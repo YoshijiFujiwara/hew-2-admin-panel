@@ -58,6 +58,11 @@ export default {
           to: "/"
         },
         {
+          icon: "satellite",
+          title: "地域別分析",
+          to: "/maps"
+        },
+        {
           icon: "fastfood",
           title: "店一覧",
           to: "/shops"
