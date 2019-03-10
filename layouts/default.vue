@@ -59,7 +59,7 @@ export default {
         },
         {
           icon: "satellite",
-          title: "地域別分析",
+          title: "地域別イベント分析",
           to: "/maps"
         },
         {

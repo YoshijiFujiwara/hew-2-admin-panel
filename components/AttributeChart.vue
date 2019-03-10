@@ -5,6 +5,7 @@
     extends: HorizontalBar,
     props: ['labelData', 'datasetData'],
     mounted() {
+
       const arrayOfObj = this.labelData.map((d, i) => {
         return {
           label: d,

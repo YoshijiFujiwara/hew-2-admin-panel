@@ -12,9 +12,18 @@
         v-btn#static_map_right(fab small color="info" @click="lng+=0.05*(15-staticMapZoom)"): v-icon keyboard_arrow_right
         v-btn#static_map_left(fab small color="info" @click="lng-=0.05*(15-staticMapZoom)"): v-icon keyboard_arrow_left
         v-btn#static_map_down(fab small color="info" @click="lnt-=0.05*(15-staticMapZoom)"): v-icon keyboard_arrow_down
+
+    v-flex.mt-5(xs6 md6)
+      v-card#event_ranking(xs12)
+        v-card-title
+          h2 地域別イベント数
+        prefecture-ranking-chart(:key="randomString" :label-data="prefectureRankingData.labels" :dataset-data="prefectureRankingData.datasets")
     v-flex(xs12)
       v-card.pl-3
-        v-card-title: h2 検索条件
+        v-card-title
+          h2 検索条件
+          v-spacer
+          v-btn(color="primary" @click="filter()") 検索
         h3 ジャンル一覧
         v-layout(row wrap)
           v-flex(xs3 v-for="(name, index) in genres")
@@ -25,7 +34,7 @@
           v-flex(xs1 v-for="(name, index) in attributeLists")
             v-checkbox(v-model="selectedAttributes" :label="name" color="info" :value="name" hide-details)
 
-        h3.mt-4 参加人数別
+        h3.mt-4 参加人数別(幹事を除く)
         v-layout(row wrap)
           v-flex(xs1 v-for="(value, index) in sessionPeoples")
             v-checkbox(v-model="selectedSessionPeoples" :label="value + '人'" color="info" :value="value" hide-details)
@@ -35,17 +44,15 @@
           v-flex(xs2 v-for="(value, index) in budgetLists")
             v-checkbox(v-model="selectedBudgets" :label="value + '円~'" color="info" :value="value" hide-details)
 
-        h3.mt-4 一人あたり実費
-        v-layout(row wrap)
-          v-flex(xs2 v-for="(value, index) in actualLists")
-            v-checkbox(v-model="selectedActualLists" :label="value + '円~'" color="info" :value="value" hide-details)
+        <!--h3.mt-4 一人あたり実費-->
+        <!--v-layout(row wrap)-->
+          <!--v-flex(xs2 v-for="(value, index) in actualLists")-->
+            <!--v-checkbox(v-model="selectedActualLists" :label="value + '円~'" color="info" :value="value" hide-details)-->
 
         h3.mt-4 時間帯別
         v-layout(row wrap)
           v-flex(xs1 v-for="(value, index) in times")
             v-checkbox(v-model="selectedTimes" :label="value + '時'" color="info" :value="value" hide-details)
-
-        v-btn(color="primary") 検索
 
     <!--<v-flex xs6>-->
     <!--<GmapMap v-bind:center="center" v-bind:map-type-id="mapTypeId" v-bind:zoom="5">-->
@@ -62,12 +69,16 @@
 
 <script>
   import {GChart} from 'vue-google-charts';
+  import PrefectureRankingChart from "../../components/AttributeChart";
 
   export default {
     components: {
-      GChart
+      GChart,
+      PrefectureRankingChart
     },
     data: () => ({
+      randomString: '',
+
       // 検索条件たち
       genres: [],
       selectedGenres: [],
@@ -91,6 +102,11 @@
       staticMapZoom: 10,
       lnt: 34.702485,
       lng: 135.495951,
+
+      prefectureRankingData: {
+        labels: [],
+        datasets: []
+      },
 
       // 行政区分コードデータ一覧（関西あたりのみ）
       prefectureCodes: {
@@ -421,22 +437,23 @@
       // this.sessionsとthis.shopsから、地図に必要なデータを配列で格納する
       drawingMap() {
         let divisionCodeArray = [];
+        let prefectureRankingNames = [];
 
         // 店情報の住所から、行政コードを取得する
         this.sessions.forEach(session => {
+
           let prefectureCode = 0;
           let preName = '';
           Object.keys(this.prefectureCodes).forEach(prefectureName => {
             if (session.shop.address.indexOf(prefectureName) === 0) {
               prefectureCode = this.prefectureCodes[prefectureName]
               preName = prefectureName;
-              console.log(prefectureCode);
+              // console.log(prefectureCode);
             }
           });
 
           // console.log('ssssssssssss')
           // console.log(this.divisionCodes[prefectureCode]);
-
           if (!(prefectureCode === 0 && preName !== '')) {
             let theCode = 0;
             this.divisionCodes.forEach(data => {
@@ -451,7 +468,7 @@
             });
             if (theCode !== 0) {
               divisionCodeArray.push(theCode);
-
+              prefectureRankingNames.push(preName);
             }
           }
         })
@@ -460,9 +477,154 @@
         divisionCodeArray.forEach(divisionCode => {
           divisionCodeCounts[divisionCode] = (divisionCodeCounts[divisionCode])? divisionCodeCounts[divisionCode] + 1 : 1 ;
         })
+        this.addCodeDatas = divisionCodeCounts;
+
+        let prefectureRankingLabels = [];
+        let prefectureRankingValues = [];
+        let prefectureNameCounts = [];
+        prefectureRankingNames.forEach(name => {
+          prefectureNameCounts[name] = (prefectureNameCounts[name])? prefectureNameCounts[name] + 1 : 1 ;
+        })
+        for (let name in prefectureNameCounts) {
+            prefectureRankingLabels.push(name);
+            prefectureRankingValues.push(prefectureNameCounts[name]);
+
+        }
+
+        this.prefectureRankingData.labels = prefectureRankingLabels;
+        this.prefectureRankingData.datasets = [
+          {
+            label: '地域別イベント数',
+            backgroundColor: '#9CCC65',
+            data: prefectureRankingValues
+          }
+        ];
+        this.randomString = Math.random().toString(36).substring(7);
+
+        // console.log(divisionCodeCounts)
+      },
+      filter() {
+        let divisionCodeArray = [];
+        let prefectureRankingNames = [];
+
+        // 店情報の住所から、行政コードを取得する
+        for (let i = 0; i < this.sessions.length; i++) {
+          // 検索条件をすべて満たしているかをチェックする
+
+          // ジャンル
+          if (this.selectedGenres && this.selectedGenres.length) {
+            if (! this.selectedGenres.includes(this.sessions[i].shop.genre_name)) {
+              continue;
+            }
+          }
+          // 属性
+          if (this.selectedAttributes && this.selectedAttributes.length) {
+            let includes = false;
+            this.sessions[i].users.forEach(user => {
+              if (user.attribute_name && this.selectedAttributes.includes(user.attribute_name)) {
+                includes = true;
+              }
+            })
+            if (! includes) {
+              continue;
+            }
+          }
+
+          // 参加人数
+          if (this.selectedSessionPeoples && this.selectedSessionPeoples.length) {
+            if (! this.selectedSessionPeoples.includes(this.sessions[i].users.length)) {
+              continue;
+            }
+          }
+
+          // 予算
+          if (this.selectedBudgets && this.selectedBudgets.length) {
+            let budget = 0;
+            if (this.sessions[i].budget && this.sessions[i].budget > 10000) {
+              budget = 0;
+            } else if (this.sessions[i].budget) {
+              budget = Math.floor(this.sessions[i].budget / 1000) * 1000;
+            }
+
+            if (! this.selectedBudgets.includes(budget)) {
+              continue;
+            }
+          }
+
+          // 時間帯
+          if (this.selectedTimes && this.selectedTimes.length) {
+            if (!this.sessions[i].start_time) {
+              continue;
+            }
+
+            let sessionStartHour = 0;
+            const timeResult = new String(this.sessions[i].start_time).split(' ');
+            if (timeResult != "null") {
+              const hourResult = timeResult[1].split(':');
+              sessionStartHour = hourResult[0];
+            }
+            if (! this.selectedTimes.includes(sessionStartHour)) {
+              continue;
+            }
+          }
+
+          let prefectureCode = 0;
+          let preName = '';
+          Object.keys(this.prefectureCodes).forEach(prefectureName => {
+            if (this.sessions[i].shop.address.indexOf(prefectureName) === 0) {
+              prefectureCode = this.prefectureCodes[prefectureName]
+              preName = prefectureName;
+              // console.log(prefectureCode);
+            }
+          });
+
+          if (!(prefectureCode === 0 && preName !== '')) {
+            let theCode = 0;
+            this.divisionCodes.forEach(data => {
+              if (data.id == prefectureCode) {
+                data.datas.forEach(detail => {
+                  if (this.sessions[i].shop.address.indexOf(preName + detail.name) === 0) {
+                    preName += detail.name;
+                    theCode = detail.id;
+                  }
+                })
+              }
+            });
+            if (theCode !== 0) {
+              divisionCodeArray.push(theCode);
+              prefectureRankingNames.push(preName);
+            }
+          }
+        }
+
+        let divisionCodeCounts = [];
+        divisionCodeArray.forEach(divisionCode => {
+          divisionCodeCounts[divisionCode] = (divisionCodeCounts[divisionCode])? divisionCodeCounts[divisionCode] + 1 : 1 ;
+        })
 
         this.addCodeDatas = divisionCodeCounts;
         // console.log(divisionCodeCounts)
+
+        let prefectureRankingLabels = [];
+        let prefectureRankingValues = [];
+        let prefectureNameCounts = [];
+        prefectureRankingNames.forEach(name => {
+          prefectureNameCounts[name] = (prefectureNameCounts[name])? prefectureNameCounts[name] + 1 : 1 ;
+        })
+        for (let name in prefectureNameCounts) {
+            prefectureRankingLabels.push(name);
+            prefectureRankingValues.push(prefectureNameCounts[name]);
+        }
+
+        this.prefectureRankingData.labels = prefectureRankingLabels;
+        this.prefectureRankingData.datasets = [
+          {
+            label: '地域別イベント数',
+            backgroundColor: '#9CCC65',
+            data: prefectureRankingValues
+          }
+        ];
+        this.randomString = Math.random().toString(36).substring(7);
       }
     },
     created() {
@@ -494,10 +656,6 @@
 </script>
 
 <style lang="stylus" scoped>
-  .vue-map-container
-    height 800px
-    width 100%
-
   #static_map
     position relative
 
