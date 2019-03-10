@@ -31,6 +31,7 @@
       v-card(color="white" title="Edit Profile" text="Complete your profile")
         v-card-title
           h1 一人あたりの平均予算　{{ averageBudget }}円
+        v-card-title
           h1 一人あたりの平均実費　{{ averageActual }}円
 
     v-flex.mt-3.px-3(xs12 md6)

@@ -139,7 +139,7 @@ export default {
     this.sessionNumberData.datasets = [
       {
         label: 'イベント数',
-        backgroundColor: '#FF3535',
+        backgroundColor: '#5C6BC0',
         data: [july2018, aug2018, sept2018, oct2018, nov2018, dec2018, jan2019, feb2019, mar2019]
       }
     ];
@@ -176,7 +176,7 @@ export default {
     this.sessionTimeData.datasets = [
       {
         label: 'イベント数',
-        backgroundColor: '#FF3535',
+        backgroundColor: '#F4511E',
         data: [time10, time11, time12, time13, time14, time15, time16, time17, time18, time19, time20, time21, time22, time23, time0, time1, time2]
       }
     ];
@@ -213,11 +213,14 @@ export default {
 
     console.log(attributeAverages);
     console.log(attributeCounts);
+    // 多い順に並び替える
+
+
     this.attributeCountData.labels = attributeNames;
     this.attributeCountData.datasets = [
       {
         label: '属性',
-        backgroundColor: '#FF3535',
+        backgroundColor: '#9CCC65',
         data: attributeCountData
       }
     ];
@@ -226,7 +229,7 @@ export default {
     this.attributePlusMinusAverageData.datasets = [
       {
         label: '属性',
-        backgroundColor: '#FF3535',
+        backgroundColor: '#4DB6AC',
         data: attributeAverageDatas
       }
     ];
