@@ -552,6 +552,7 @@
           }
 
           // 時間帯
+          // console.log(this.selectedTimes);
           if (this.selectedTimes && this.selectedTimes.length) {
             if (!this.sessions[i].start_time) {
               continue;
@@ -563,7 +564,7 @@
               const hourResult = timeResult[1].split(':');
               sessionStartHour = hourResult[0];
             }
-            if (! this.selectedTimes.includes(sessionStartHour)) {
+            if (! this.selectedTimes.includes(parseInt(sessionStartHour))) {
               continue;
             }
           }

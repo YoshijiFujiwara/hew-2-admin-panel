@@ -12,15 +12,15 @@
           data: this.datasetData[0].data[i] || 0
         };
       });
-      console.log('array');
-      console.log(arrayOfObj)
+      // console.log('array');
+      // console.log(arrayOfObj)
 
       const sortedArrayOfObj = arrayOfObj.sort(function (a, b) {
         return b.data - a.data;
       });
-
-      console.log('array');
-      console.log(sortedArrayOfObj)
+      //
+      // console.log('array');
+      // console.log(sortedArrayOfObj)
 
       let newArrayLabel = [];
       let newArrayData = [
@@ -34,8 +34,8 @@
         newArrayLabel.push(d.label);
         newArrayData[0].data.push(d.data);
       });
-      console.log(newArrayLabel);
-      console.log(newArrayData);
+      // console.log(newArrayLabel);
+      // console.log(newArrayData);
 
       this.renderChart(
         {
